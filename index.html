@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0A0A0A">
   <title>PROMATYK — Serwis wtryskarek, serwis robotów, serwis SEPRO, Wittmann, Engel | Bydgoszcz</title>
-
   <meta name="description" content="PROMATYK — serwis wtryskarek i serwis robotów przemysłowych. Diagnostyka, naprawa, relokacje, R&D, druk 3D i CNC — Bydgoszcz, cała Polska.">
   <meta name="keywords" content="serwis wtryskarek, serwis robotów, serwis SEPRO, Wittmann, Engel, druk 3D, CNC, Bydgoszcz">
   <meta name="author" content="PROMATYK Kamil Szajner">
+  <link rel="icon" type="image/png" href="img/favicon.png">
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -19,6 +18,7 @@
           colors: {
             obsidian: '#0A0A0A',
             'industrial-slate': '#141414',
+            graphite: '#1B1B1B',
             gold: '#C5A059',
             concrete: '#E5E5E5',
           },
@@ -35,63 +35,56 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
+    html { scroll-padding-top: 88px; }
+    body { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid #C5A059; outline-offset: 3px; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    /* Animation Fade-in */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
 
-    /* Slider realizacji */
-    .slider .slide { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.12);
-      transition: opacity 1s ease, transform 7s cubic-bezier(.2,.6,.3,1); user-select:none; }
-    .slider .slide.is-active { opacity:1; transform:scale(1); z-index:1; }
-    .slider:not(.multi):hover .slide { transform:scale(1.1); transition: transform .5s ease; }
-    video.slide { pointer-events: none; }
-    #lightbox-video { display: none; }
-    .slider.contain .slide { object-fit: contain; background: #0A0A0A; }
-    .slider .seg { flex:1; height:3px; background:rgba(229,229,229,.25); overflow:hidden; border-radius:2px; }
-    .slider .seg i { display:block; height:100%; width:0; background:#C5A059; box-shadow:0 0 8px rgba(197,160,89,.8); }
-    .slider .seg.done i { width:100%; }
-    .slider .seg.run i { animation: segfill var(--dur,4.5s) linear forwards; }
-    .slider:hover .seg.run i, .slider.paused .seg.run i { animation-play-state: paused; }
-    @keyframes segfill { from { width:0 } to { width:100% } }
-    .slider .nav-btn { position:absolute; top:50%; z-index:20; width:44px; height:44px; margin-top:-22px; border-radius:9999px;
-      background:rgba(10,10,10,.6); border:1px solid rgba(197,160,89,.5); color:#E5E5E5; font-size:28px; line-height:40px; text-align:center;
-      backdrop-filter:blur(6px); opacity:0; transition: opacity .3s, transform .3s, background .3s; }
-    .slider .nav-btn.prev { left:14px; transform:translateX(-10px); }
-    .slider .nav-btn.next { right:14px; transform:translateX(10px); }
-    .slider:hover .nav-btn, .slider .nav-btn:focus-visible { opacity:1; transform:translateX(0); }
-    .slider .nav-btn:hover { background:#C5A059; color:#0A0A0A; }
-    @media (hover:none) { .slider .nav-btn { opacity:.85; transform:none; } }
-    .slider .dot { width:8px; height:8px; border-radius:9999px; background:rgba(229,229,229,.4); transition: all .35s; }
-    .slider .dot.on { width:22px; background:#C5A059; }
-    .lb-arrow { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:52px; height:52px; border-radius:9999px;
-      border:1px solid rgba(197,160,89,.5); color:#E5E5E5; background:rgba(20,20,20,.7); font-size:32px; line-height:48px; text-align:center; transition: background .3s, color .3s; }
-    .lb-arrow:hover { background:#C5A059; color:#0A0A0A; }
-    #lightbox-img { transition: opacity .25s ease; }
+    /* Pojawianie się sekcji */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+    .reveal.active { opacity: 1; transform: none; }
+
+    /* Nagłówek */
+    #header.scrolled { background: rgba(10,10,10,.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: rgba(255,255,255,.08); }
+
+    /* Pasek logotypów (marquee) */
+    .marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+    .marquee-track { display: flex; gap: 1rem; width: max-content; animation: marquee 32s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* Zakładki usług */
+    .tab-btn[aria-selected="true"] { background: #C5A059; color: #0A0A0A; border-color: #C5A059; }
+    .tab-panel { animation: fadein .45s ease; }
+    @keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* Filtry realizacji */
+    .chip[aria-pressed="true"] { background: #C5A059; color: #0A0A0A; border-color: #C5A059; }
+    .case-card.hide { display: none; }
+
+    /* Okno realizacji */
+    #case-modal { transition: opacity .25s ease; }
+    #case-modal.open { opacity: 1; pointer-events: auto; }
+    #case-modal .panel { transition: transform .35s cubic-bezier(.16,1,.3,1); transform: translateY(24px); }
+    #case-modal.open .panel { transform: none; }
+    .stage-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .45s ease; }
+    .stage-media.on { opacity: 1; }
+    .thumb[aria-current="true"] { outline: 2px solid #C5A059; outline-offset: 2px; opacity: 1; }
+
     @media (prefers-reduced-motion: reduce) {
-      .slider .slide { transition: opacity .3s ease; transform:none !important; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .marquee-track { animation: none; }
+      .tab-panel { animation: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
-<body class="bg-obsidian text-concrete font-body antialiased relative">
+<body class="bg-obsidian text-concrete font-body antialiased">
 
-  <!-- Dynamiczny Pasek Postępu Przewijania -->
-  <div class="fixed left-0 top-0 bottom-0 w-[3px] bg-white/5 z-[60] hidden md:block">
-    <div id="scroll-progress" class="w-full bg-gold h-0 transition-all duration-75 shadow-[0_0_10px_rgba(197,160,89,0.8)]"></div>
-  </div>
-
-  <!-- Dynamiczne Powiadomienie Toast -->
-  <div id="toast" class="fixed top-5 right-5 z-[100] transform translate-x-full transition-transform duration-300 bg-industrial-slate border border-gold/50 text-concrete px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3">
+  <!-- Powiadomienie -->
+  <div id="toast" role="status" aria-live="polite" class="fixed top-24 right-4 sm:right-6 z-[110] translate-x-[120%] transition-transform duration-300 bg-industrial-slate border border-gold/50 text-concrete px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3 max-w-sm">
     <span id="toast-icon" class="text-gold text-xl">✓</span>
     <div>
       <h4 id="toast-title" class="font-heading font-bold text-sm text-gold">Wiadomość wysłana!</h4>
@@ -99,827 +92,912 @@
     </div>
   </div>
 
-  <!-- Nawigacja Dół -->
-  <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-3xl">
-    <div class="flex items-center justify-between gap-1 sm:gap-2 bg-industrial-slate/90 backdrop-blur-md border border-gold/20 rounded-full px-3 sm:px-5 py-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
-      <a href="#top" class="flex items-center gap-2 pr-2 sm:pr-3 border-r border-white/10 shrink-0">
-        <span class="inline-block relative w-10 h-10 rounded-full border border-gold/50 shrink-0 overflow-hidden">
-          <img src="img/01_75972f3a6b.png" class="w-full h-full object-contain p-1.5 bg-obsidian" alt="PROMATYK Logo">
-        </span>
+  <!-- NAGŁÓWEK -->
+  <header id="header" class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-300">
+    <div id="scroll-progress" class="absolute left-0 top-0 h-[2px] w-0 bg-gold"></div>
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center gap-6">
+      <a href="#top" class="flex items-center gap-3 shrink-0" aria-label="PROMATYK – strona główna">
+        <img src="img/promatyk_znak.png" alt="" class="h-10 w-auto">
+        <img src="img/promatyk_napis.png" alt="PROMATYK" class="h-[15px] w-auto hidden sm:block">
       </a>
-      <div id="nav-links" class="flex items-center gap-1 sm:gap-3 overflow-x-auto no-scrollbar">
-        <a href="#uslugi" class="nav-item whitespace-nowrap text-[11px] sm:text-xs font-body uppercase tracking-wider text-concrete/80 hover:text-gold transition-colors px-1.5 sm:px-2 py-1">Usługi</a>
-        <a href="#druk3d" class="nav-item whitespace-nowrap text-[11px] sm:text-xs font-body uppercase tracking-wider text-concrete/80 hover:text-gold transition-colors px-1.5 sm:px-2 py-1">Druk 3D i CNC</a>
-        <a href="#galeria" class="nav-item whitespace-nowrap text-[11px] sm:text-xs font-body uppercase tracking-wider text-concrete/80 hover:text-gold transition-colors px-1.5 sm:px-2 py-1">Galeria</a>
-        <a href="#proces" class="nav-item whitespace-nowrap text-[11px] sm:text-xs font-body uppercase tracking-wider text-concrete/80 hover:text-gold transition-colors px-1.5 sm:px-2 py-1">Proces</a>
-        <a href="#kontakt" class="nav-item whitespace-nowrap text-[11px] sm:text-xs font-body uppercase tracking-wider text-concrete/80 hover:text-gold transition-colors px-1.5 sm:px-2 py-1">Kontakt</a>
+      <nav class="hidden lg:flex items-center gap-1 mx-auto" aria-label="Menu główne">
+        <a href="#uslugi" data-nav="desktop" class="px-3.5 py-2 rounded-full text-sm text-concrete/75 hover:text-gold transition-colors">Usługi</a>
+        <a href="#dlaczego" data-nav="desktop" class="px-3.5 py-2 rounded-full text-sm text-concrete/75 hover:text-gold transition-colors">Dlaczego my</a>
+        <a href="#galeria" data-nav="desktop" class="px-3.5 py-2 rounded-full text-sm text-concrete/75 hover:text-gold transition-colors">Realizacje</a>
+        <a href="#druk3d" data-nav="desktop" class="px-3.5 py-2 rounded-full text-sm text-concrete/75 hover:text-gold transition-colors">Druk 3D i CNC</a>
+        <a href="#proces" data-nav="desktop" class="px-3.5 py-2 rounded-full text-sm text-concrete/75 hover:text-gold transition-colors">Proces</a>
+        <a href="#kontakt" data-nav="desktop" class="px-3.5 py-2 rounded-full text-sm text-concrete/75 hover:text-gold transition-colors">Kontakt</a>
+      </nav>
+      <div class="hidden lg:flex items-center gap-3 shrink-0">
+        <a href="tel:+48733590940" class="inline-flex items-center gap-2 text-sm font-semibold text-concrete hover:text-gold transition-colors px-3 py-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 733 590 940
+        </a>
+        <a href="#kontakt" class="inline-flex items-center gap-2 bg-gold text-black font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-concrete transition-colors">Wyślij zapytanie</a>
       </div>
-      <a href="tel:+48733590940" class="flex items-center gap-1.5 pl-2 sm:pl-3 border-l border-white/10 text-gold text-xs font-body font-semibold shrink-0 hover:scale-105 transition-transform">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <span class="hidden sm:inline">733 590 940</span>
-      </a>
+      <button id="menu-btn" type="button" class="lg:hidden ml-auto inline-flex items-center justify-center w-11 h-11 rounded-full border border-white/15 text-concrete" aria-expanded="false" aria-controls="mobile-menu" aria-label="Otwórz menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     </div>
-  </nav>
+    <div id="mobile-menu" class="lg:hidden hidden border-t border-white/10 bg-obsidian/95 backdrop-blur-xl">
+      <nav class="max-w-7xl mx-auto px-5 py-4 flex flex-col" aria-label="Menu mobilne">
+        <a href="#uslugi" data-nav="mobile" class="py-3.5 border-b border-white/5 text-concrete/85 font-medium">Usługi</a>
+        <a href="#dlaczego" data-nav="mobile" class="py-3.5 border-b border-white/5 text-concrete/85 font-medium">Dlaczego my</a>
+        <a href="#galeria" data-nav="mobile" class="py-3.5 border-b border-white/5 text-concrete/85 font-medium">Realizacje</a>
+        <a href="#druk3d" data-nav="mobile" class="py-3.5 border-b border-white/5 text-concrete/85 font-medium">Druk 3D i CNC</a>
+        <a href="#proces" data-nav="mobile" class="py-3.5 border-b border-white/5 text-concrete/85 font-medium">Proces</a>
+        <a href="#kontakt" data-nav="mobile" class="py-3.5 border-b border-white/5 text-concrete/85 font-medium">Kontakt</a>
+        <a href="#kontakt" class="mt-4 inline-flex justify-center bg-gold text-black font-semibold px-5 py-3.5 rounded-full">Wyślij zapytanie</a>
+      </nav>
+    </div>
+  </header>
 
-  <!-- Sekcja HERO -->
-  <section id="top" class="relative min-h-screen w-full overflow-hidden bg-obsidian flex items-end">
+  <main>
+  <!-- HERO -->
+  <section id="top" class="relative min-h-[100svh] flex flex-col overflow-hidden">
     <div class="absolute inset-0">
-      <img src="https://media.base44.com/images/public/6abf74690d907898717e6274/664281b4a_generated_0cc15887.jpg" alt="PROMATYK Serwis" class="w-full h-full object-cover opacity-60">
+      <img src="https://media.base44.com/images/public/6abf74690d907898717e6274/664281b4a_generated_0cc15887.jpg" alt="" class="w-full h-full object-cover opacity-60">
     </div>
-    <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/70 to-obsidian/20"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/70 to-obsidian/30"></div>
 
-    <div class="relative z-10 w-full px-6 sm:px-10 lg:px-20 pb-24 sm:pb-28 pt-40 reveal">
-      <img src="img/02_c425478005.png" alt="PROMATYK – serwis maszyn i robotów" class="block mx-auto w-44 sm:w-56 lg:w-64 h-auto mb-8 drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
-      <div class="flex items-center gap-3 mb-6">
-        <span class="w-8 h-[2px] bg-gold"></span>
-        <span class="text-gold text-xs sm:text-sm font-body uppercase tracking-[0.2em]">Serwis wtryskarek i robotów przemysłowych</span>
-      </div>
-      <h1 class="font-heading font-black uppercase leading-[0.95] tracking-[-0.03em] text-[9vw] sm:text-[6.5vw] lg:text-[4.6vw]">
-        <span class="block text-gold">PRZYWRACAMY MASZYNY<br>DO ŻYCIA</span>
-        <span class="block text-concrete text-right mt-2">I WZNAWIAMY PRODUKCJĘ</span>
-      </h1>
-      <p class="mt-8 max-w-xl text-concrete/70 font-body text-sm sm:text-base leading-relaxed">
-        Diagnostyka i naprawa wtryskarek, robotów przemysłowych oraz urządzeń peryferyjnych. Relokacje, uruchomienia, wsparcie R&amp;D, a także projektowanie CAD, druk 3D z tworzyw technicznych i frezowanie CNC — dla zakładów przetwórstwa tworzyw sztucznych w całej Polsce.
+    <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-5 sm:px-8 pt-28 pb-12">
+      <img src="img/promatyk_logo.png" alt="PROMATYK – serwis maszyn i robotów" class="w-40 sm:w-52 lg:w-60 h-auto mb-8 drop-shadow-[0_4px_24px_rgba(0,0,0,.6)] reveal">
+      <p class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-obsidian/50 backdrop-blur px-4 py-1.5 text-gold text-xs sm:text-sm font-medium mb-6 reveal">
+        <span class="w-1.5 h-1.5 rounded-full bg-gold"></span> Serwis wtryskarek i robotów przemysłowych – Bydgoszcz i cała Polska
       </p>
-      <div class="mt-10 flex flex-wrap items-center gap-4">
-        <a href="tel:+48733590940" class="inline-flex items-center gap-2 bg-gold text-black font-body font-semibold text-sm px-6 py-3.5 hover:bg-concrete transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span>Zadzwoń: 733 590 940</span>
+      <h1 class="font-heading font-black uppercase leading-[0.98] tracking-[-0.02em] text-[2.4rem] sm:text-6xl lg:text-7xl max-w-5xl reveal">
+        <span class="text-gold">Przywracamy maszyny do życia</span><br>
+        <span class="text-concrete">i wznawiamy produkcję</span>
+      </h1>
+      <p class="mt-6 max-w-2xl text-concrete/75 text-base sm:text-lg leading-relaxed reveal">
+        Diagnostyka i naprawa wtryskarek, robotów przemysłowych oraz urządzeń peryferyjnych. Relokacje, uruchomienia, wsparcie R&amp;D, projektowanie CAD, druk 3D i frezowanie CNC.
+      </p>
+      <div class="mt-9 flex flex-col sm:flex-row items-center gap-3 reveal">
+        <a href="tel:+48733590940" class="inline-flex items-center gap-2 bg-gold text-black font-semibold px-7 py-4 rounded-full hover:bg-concrete transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Zadzwoń: 733 590 940
         </a>
-        <a href="#kontakt" class="inline-flex items-center gap-2 border border-gold/50 text-concrete font-body text-sm px-6 py-3.5 hover:border-gold hover:text-gold transition-colors">
-          Napisz do nas &rarr;
+        <a href="#kontakt" class="inline-flex items-center gap-2 border border-white/25 bg-white/5 backdrop-blur text-concrete font-semibold px-7 py-4 rounded-full hover:border-gold hover:text-gold transition-colors">
+          Opisz problem <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Zaufali nam -->
+    <div class="relative z-10 pb-10">
+      <p class="text-center text-concrete/50 text-xs sm:text-sm mb-5">Zaufali nam m.in.</p>
+      <div class="marquee overflow-hidden">
+        <div class="marquee-track">
+          <div class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/apator.png" alt="Apator" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/berdal.png" alt="Berdal" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/hanplast.png" alt="Hanplast" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/keeeper.png" alt="Keeeper" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/maflow.png" alt="Maflow" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/siropol.png" alt="Siropol" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div aria-hidden="true" class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/apator.png" alt="Apator" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div aria-hidden="true" class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/berdal.png" alt="Berdal" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div aria-hidden="true" class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/hanplast.png" alt="Hanplast" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div aria-hidden="true" class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/keeeper.png" alt="Keeeper" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div aria-hidden="true" class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/maflow.png" alt="Maflow" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+          <div aria-hidden="true" class="shrink-0 w-40 h-16 rounded-2xl bg-white px-5 py-3 flex items-center justify-center"><img src="img/loga/siropol.png" alt="Siropol" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USŁUGI (zakładki) -->
+  <section id="uslugi" class="py-24 sm:py-32 px-5 sm:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+        <h2 class="font-heading font-black uppercase text-3xl sm:text-5xl tracking-[-0.02em]">Czym się zajmujemy</h2>
+        <p class="text-concrete/60 mt-5 leading-relaxed">Kompleksowa obsługa maszyn i robotów w zakładach przetwórstwa tworzyw sztucznych — od pierwszej diagnozy po uruchomienie oraz wykonanie części na własnym zapleczu.</p>
+      </div>
+
+      <div class="reveal">
+        <div role="tablist" aria-label="Usługi" class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-8 sm:justify-center -mx-5 px-5 sm:mx-0 sm:px-0">
+          <button type="button" role="tab" id="tab-diagnostyka" aria-controls="panel-diagnostyka" aria-selected="true" tabindex="0" class="tab-btn shrink-0 whitespace-nowrap rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-concrete/80 hover:border-gold/60 transition-colors">Diagnostyka i naprawa</button>
+          <button type="button" role="tab" id="tab-rnd" aria-controls="panel-rnd" aria-selected="false" tabindex="-1" class="tab-btn shrink-0 whitespace-nowrap rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-concrete/80 hover:border-gold/60 transition-colors">R&amp;D i EOAT</button>
+          <button type="button" role="tab" id="tab-suszarki" aria-controls="panel-suszarki" aria-selected="false" tabindex="-1" class="tab-btn shrink-0 whitespace-nowrap rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-concrete/80 hover:border-gold/60 transition-colors">Suszarki i sita</button>
+          <button type="button" role="tab" id="tab-cad" aria-controls="panel-cad" aria-selected="false" tabindex="-1" class="tab-btn shrink-0 whitespace-nowrap rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-concrete/80 hover:border-gold/60 transition-colors">CAD, druk 3D i CNC <span class="ml-1 text-[10px] font-bold uppercase tracking-wider bg-gold/20 text-gold px-1.5 py-0.5 rounded-full">Nowość</span></button>
+          <button type="button" role="tab" id="tab-relokacja" aria-controls="panel-relokacja" aria-selected="false" tabindex="-1" class="tab-btn shrink-0 whitespace-nowrap rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-concrete/80 hover:border-gold/60 transition-colors">Relokacja i uruchamianie</button>
+        </div>
+        <div role="tabpanel" id="panel-diagnostyka" aria-labelledby="tab-diagnostyka" class="tab-panel">
+          <div class="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate">
+            <div class="p-7 sm:p-12 flex flex-col justify-center order-2 lg:order-1">
+              <h3 class="font-heading font-black uppercase text-2xl sm:text-3xl tracking-tight">Diagnostyka i naprawa</h3>
+              <p class="text-concrete/65 mt-5 leading-relaxed">Diagnozujemy i naprawiamy wtryskarki, roboty przemysłowe oraz urządzenia peryferyjne. Szukamy przyczyny, a nie tylko objawu — aby produkcja wróciła do ruchu i nie stanęła ponownie.</p>
+              <ul class="mt-7 space-y-3 text-concrete/85">
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Usterki mechaniki i hydrauliki</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Elektryka, sterowanie, napędy i serwonapędy</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Urządzenia peryferyjne i podajniki</span></li>
+              </ul>
+              <a href="#kontakt" class="mt-9 self-start inline-flex items-center gap-2 bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-concrete transition-colors">Zapytaj o tę usługę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <div class="relative min-h-[240px] sm:min-h-[340px] order-1 lg:order-2">
+              <img src="img/thumbs/r04_arburg_1.jpg" alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-industrial-slate/70 via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" id="panel-rnd" aria-labelledby="tab-rnd" class="tab-panel" hidden>
+          <div class="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate">
+            <div class="p-7 sm:p-12 flex flex-col justify-center order-2 lg:order-1">
+              <h3 class="font-heading font-black uppercase text-2xl sm:text-3xl tracking-tight">R&amp;D i EOAT</h3>
+              <p class="text-concrete/65 mt-5 leading-relaxed">Optymalizujemy produkcję, piszemy programy oraz projektujemy i wykonujemy chwytaki (EOAT) zgodnie z wytycznymi klienta. Rozwiązania szyte na miarę procesu i wyrobu.</p>
+              <ul class="mt-7 space-y-3 text-concrete/85">
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Optymalizacja cyklu i procesu</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Programowanie robotów i sterowników</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Projekt i wykonanie chwytaków (EOAT)</span></li>
+              </ul>
+              <a href="#kontakt" class="mt-9 self-start inline-flex items-center gap-2 bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-concrete transition-colors">Zapytaj o tę usługę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <div class="relative min-h-[240px] sm:min-h-[340px] order-1 lg:order-2">
+              <img src="img/thumbs/r01_uchwyty_1.jpg" alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-industrial-slate/70 via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" id="panel-suszarki" aria-labelledby="tab-suszarki" class="tab-panel" hidden>
+          <div class="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate">
+            <div class="p-7 sm:p-12 flex flex-col justify-center order-2 lg:order-1">
+              <h3 class="font-heading font-black uppercase text-2xl sm:text-3xl tracking-tight">Suszarki i sita</h3>
+              <p class="text-concrete/65 mt-5 leading-relaxed">Serwisujemy suszarki do tworzyw sztucznych oraz dostarczamy oryginalne sita molekularne. Dbamy o stabilne suszenie granulatu i regenerację materiału — bez przerw w produkcji i strat surowca.</p>
+              <ul class="mt-7 space-y-3 text-concrete/85">
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Serwis i naprawa suszarek</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Sprzedaż oryginalnych sit molekularnych</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Regeneracja i stabilność procesu suszenia</span></li>
+              </ul>
+              <a href="#kontakt" class="mt-9 self-start inline-flex items-center gap-2 bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-concrete transition-colors">Zapytaj o tę usługę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <div class="relative min-h-[240px] sm:min-h-[340px] order-1 lg:order-2">
+              <img src="img/thumbs/r02_motan_1.jpg" alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-industrial-slate/70 via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" id="panel-cad" aria-labelledby="tab-cad" class="tab-panel" hidden>
+          <div class="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate">
+            <div class="p-7 sm:p-12 flex flex-col justify-center order-2 lg:order-1">
+              <h3 class="font-heading font-black uppercase text-2xl sm:text-3xl tracking-tight">CAD, druk 3D i CNC</h3>
+              <p class="text-concrete/65 mt-5 leading-relaxed">Projektujemy w CAD, a następnie wykonujemy detal na własnym zapleczu — drukujemy 3D z tworzyw technicznych albo frezujemy CNC. Od pomysłu do gotowej części.</p>
+              <ul class="mt-7 space-y-3 text-concrete/85">
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Projekt i model 3D w CAD</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Wydruk 3D — tworzywa techniczne</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Frezowanie CNC detali i przyrządów</span></li>
+              </ul>
+              <a href="#kontakt" class="mt-9 self-start inline-flex items-center gap-2 bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-concrete transition-colors">Zapytaj o tę usługę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <div class="relative min-h-[240px] sm:min-h-[340px] order-1 lg:order-2">
+              <img src="img/thumbs/r06_sepro_2.jpg" alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-industrial-slate/70 via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" id="panel-relokacja" aria-labelledby="tab-relokacja" class="tab-panel" hidden>
+          <div class="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate">
+            <div class="p-7 sm:p-12 flex flex-col justify-center order-2 lg:order-1">
+              <h3 class="font-heading font-black uppercase text-2xl sm:text-3xl tracking-tight">Relokacja i uruchamianie</h3>
+              <p class="text-concrete/65 mt-5 leading-relaxed">Pomagamy w relokacji oraz ponownym uruchomieniu wtryskarek i robotów — od demontażu i zabezpieczenia maszyny, przez transport i montaż, po pierwszy rozruch produkcyjny.</p>
+              <ul class="mt-7 space-y-3 text-concrete/85">
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Demontaż i zabezpieczenie maszyn</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Transport, montaż i poziomowanie</span></li>
+              <li class="flex gap-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><path d="m5 12 5 5L20 7"/></svg><span>Uruchomienie i szkolenie obsługi</span></li>
+              </ul>
+              <a href="#kontakt" class="mt-9 self-start inline-flex items-center gap-2 bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-concrete transition-colors">Zapytaj o tę usługę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <div class="relative min-h-[240px] sm:min-h-[340px] order-1 lg:order-2">
+              <img src="img/thumbs/r08_km_1.jpg" alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-industrial-slate/70 via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DLACZEGO MY -->
+  <section id="dlaczego" class="py-24 sm:py-32 px-5 sm:px-8 bg-industrial-slate">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+        <h2 class="font-heading font-black uppercase text-3xl sm:text-5xl tracking-[-0.02em]">Dlaczego Promatyk</h2>
+        <p class="text-concrete/60 mt-5 leading-relaxed">Nie wymieniamy części na próbę. Mierzymy, znajdujemy przyczynę i przywracamy maszynę do pracy najszybciej, jak się da.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <a href="#galeria" data-case="engel-zwarcie" class="group block text-left rounded-3xl overflow-hidden border border-white/10 bg-obsidian hover:border-gold/50 transition-colors reveal">
+          <div class="relative h-56 sm:h-64 overflow-hidden">
+            <img src="img/thumbs/r10_engel_2.jpg" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian to-transparent"></div>
+          </div>
+          <div class="p-7 sm:p-8 -mt-10 relative">
+            <h3 class="font-heading font-bold uppercase text-lg sm:text-xl">Szukamy przyczyny, nie objawu</h3>
+            <p class="text-concrete/60 mt-3 leading-relaxed">Przy wymianie uszczelnień siłownika zwarcia znaleźliśmy w środku śrubę, która niszczyła cylinder. Sama wymiana uszczelnień niczego by nie rozwiązała.</p>
+            <span class="mt-5 inline-flex items-center gap-2 text-gold text-sm font-semibold">Zobacz realizację <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a href="#galeria" data-case="can-zasilanie" class="group block text-left rounded-3xl overflow-hidden border border-white/10 bg-obsidian hover:border-gold/50 transition-colors reveal">
+          <div class="relative h-56 sm:h-64 overflow-hidden">
+            <img src="img/thumbs/r05_psu_1.jpg" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian to-transparent"></div>
+          </div>
+          <div class="p-7 sm:p-8 -mt-10 relative">
+            <h3 class="font-heading font-bold uppercase text-lg sm:text-xl">Diagnostyka oscyloskopem przy maszynie</h3>
+            <p class="text-concrete/60 mt-3 leading-relaxed">Mierzymy na hali, w trakcie pracy maszyny. Widzimy usterki, których multimetr nie pokaże – np. 2 V tętnień na zasilaczu 24 V.</p>
+            <span class="mt-5 inline-flex items-center gap-2 text-gold text-sm font-semibold">Zobacz realizację <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a href="#galeria" data-case="sepro-os-z" class="group block text-left rounded-3xl overflow-hidden border border-white/10 bg-obsidian hover:border-gold/50 transition-colors reveal">
+          <div class="relative h-56 sm:h-64 overflow-hidden">
+            <img src="img/thumbs/r06_sepro_2.jpg" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian to-transparent"></div>
+          </div>
+          <div class="p-7 sm:p-8 -mt-10 relative">
+            <h3 class="font-heading font-bold uppercase text-lg sm:text-xl">Brakującą część wykonamy sami</h3>
+            <p class="text-concrete/60 mt-3 leading-relaxed">Własne CNC i druk 3D z tworzyw technicznych. Zamiast czekać kilka dni na dostawę – robot Sepro pracował jeszcze tego samego dnia.</p>
+            <span class="mt-5 inline-flex items-center gap-2 text-gold text-sm font-semibold">Zobacz realizację <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a href="#galeria" data-case="km-poduszka" class="group block text-left rounded-3xl overflow-hidden border border-white/10 bg-obsidian hover:border-gold/50 transition-colors reveal">
+          <div class="relative h-56 sm:h-64 overflow-hidden">
+            <img src="img/thumbs/r08_km_1.jpg" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian to-transparent"></div>
+          </div>
+          <div class="p-7 sm:p-8 -mt-10 relative">
+            <h3 class="font-heading font-bold uppercase text-lg sm:text-xl">Gdy maszyna stoi, działamy szybko</h3>
+            <p class="text-concrete/60 mt-3 leading-relaxed">Interwencje priorytetowe, także w weekend – jak naprawa poduszki zwarciowej KraussMaffei wykonana w sobotę.</p>
+            <span class="mt-5 inline-flex items-center gap-2 text-gold text-sm font-semibold">Zobacz realizację <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Sekcja USŁUGI (5 Pełnych Punktów) -->
-  <section id="uslugi" class="bg-obsidian py-28 sm:py-36 px-6 sm:px-10 lg:px-20 relative overflow-hidden">
-    <div class="relative z-10 max-w-3xl mb-16 sm:mb-24 reveal">
-      <span class="text-gold text-xs font-body uppercase tracking-[0.2em]">Zakres usług</span>
-      <h2 class="font-heading font-black uppercase text-4xl sm:text-5xl lg:text-6xl text-concrete mt-4 tracking-[-0.02em]">Czym się zajmujemy</h2>
-      <p class="text-concrete/60 font-body text-sm sm:base mt-5 leading-relaxed">Kompleksowa obsługa maszyn i robotów w zakładach przetwórstwa tworzyw sztucznych — od pierwszej diagnozy po uruchomienie oraz wykonanie części na własnym zapleczu.</p>
-    </div>
-
-    <div class="relative z-10 space-y-0">
-      <!-- 01 -->
-      <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_1.2fr] gap-6 md:gap-10 py-10 border-t border-white/10 group reveal">
-        <div class="flex items-start md:items-center"><span class="font-heading font-black text-5xl sm:text-6xl text-white/10 group-hover:text-gold/30 transition-colors">01</span></div>
-        <div class="flex items-start gap-4">
-          <div><h3 class="font-heading font-bold text-xl sm:text-2xl text-concrete uppercase tracking-tight">Diagnostyka i naprawa</h3></div>
+  <!-- REALIZACJE -->
+  <section id="galeria" class="py-24 sm:py-32 px-5 sm:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10 reveal">
+        <div class="max-w-2xl">
+          <h2 class="font-heading font-black uppercase text-3xl sm:text-5xl tracking-[-0.02em]">Zrealizowane projekty</h2>
+          <p class="text-concrete/60 mt-5 leading-relaxed">Prawdziwe naprawy z ostatnich miesięcy – ze zdjęciami, pomiarami i opisem, co i dlaczego zrobiliśmy.</p>
         </div>
-        <div>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed mb-4">Diagnozujemy i naprawiamy wtryskarki, roboty przemysłowe oraz urządzenia peryferyjne. Szukamy przyczyny, a nie tylko objawu — aby produkcja wróciła do ruchu i nie stanęła ponownie.</p>
-          <ul class="space-y-1.5 text-concrete/80 text-xs sm:text-sm">
-            <li><span class="text-gold">✓</span> Usterki mechaniki i hydrauliki</li>
-            <li><span class="text-gold">✓</span> Elektryka, sterowanie, napędy i serwonapędy</li>
-            <li><span class="text-gold">✓</span> Urządzenia peryferyjne i podajniki</li>
-          </ul>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-5 px-5 lg:mx-0 lg:px-0" role="group" aria-label="Filtruj realizacje">
+          <button type="button" class="chip shrink-0 whitespace-nowrap rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-concrete/80 hover:border-gold/60 transition-colors" data-filter="all" aria-pressed="true">Wszystkie</button>
+          <button type="button" class="chip shrink-0 whitespace-nowrap rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-concrete/80 hover:border-gold/60 transition-colors" data-filter="wtryskarki" aria-pressed="false">Wtryskarki</button>
+          <button type="button" class="chip shrink-0 whitespace-nowrap rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-concrete/80 hover:border-gold/60 transition-colors" data-filter="roboty" aria-pressed="false">Roboty</button>
+          <button type="button" class="chip shrink-0 whitespace-nowrap rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-concrete/80 hover:border-gold/60 transition-colors" data-filter="peryferia" aria-pressed="false">Peryferia</button>
+          <button type="button" class="chip shrink-0 whitespace-nowrap rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-concrete/80 hover:border-gold/60 transition-colors" data-filter="elektronika" aria-pressed="false">Elektronika</button>
+          <button type="button" class="chip shrink-0 whitespace-nowrap rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-concrete/80 hover:border-gold/60 transition-colors" data-filter="cnc" aria-pressed="false">CAD, druk 3D i CNC</button>
         </div>
       </div>
-
-      <!-- 02 -->
-      <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_1.2fr] gap-6 md:gap-10 py-10 border-t border-white/10 group reveal">
-        <div class="flex items-start md:items-center"><span class="font-heading font-black text-5xl sm:text-6xl text-white/10 group-hover:text-gold/30 transition-colors">02</span></div>
-        <div class="flex items-start gap-4">
-          <div><h3 class="font-heading font-bold text-xl sm:text-2xl text-concrete uppercase tracking-tight">R&amp;D — optymalizacja, programowanie, EOAT</h3></div>
-        </div>
-        <div>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed mb-4">Optymalizujemy produkcję, piszemy programy oraz projektujemy i wykonujemy chwytaki (EOAT) zgodnie z wytycznymi klienta. Rozwiązania szyte na miarę procesu i wyrobu.</p>
-          <ul class="space-y-1.5 text-concrete/80 text-xs sm:text-sm">
-            <li><span class="text-gold">✓</span> Optymalizacja cyklu i procesu</li>
-            <li><span class="text-gold">✓</span> Programowanie robotów i sterowników</li>
-            <li><span class="text-gold">✓</span> Projekt i wykonanie chwytaków (EOAT)</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 03 -->
-      <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_1.2fr] gap-6 md:gap-10 py-10 border-t border-white/10 group reveal">
-        <div class="flex items-start md:items-center"><span class="font-heading font-black text-5xl sm:text-6xl text-white/10 group-hover:text-gold/30 transition-colors">03</span></div>
-        <div class="flex items-start gap-4">
-          <div><h3 class="font-heading font-bold text-xl sm:text-2xl text-concrete uppercase tracking-tight">Suszarki i sita molekularne</h3></div>
-        </div>
-        <div>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed mb-4">Serwisujemy suszarki do tworzyw sztucznych oraz dostarczamy oryginalne sita molekularne. Dbamy o stabilne suszenie granulatu i regenerację materiału — bez przerw w produkcji i strat surowca.</p>
-          <ul class="space-y-1.5 text-concrete/80 text-xs sm:text-sm">
-            <li><span class="text-gold">✓</span> Serwis i naprawa suszarek</li>
-            <li><span class="text-gold">✓</span> Sprzedaż oryginalnych sit molekularnych</li>
-            <li><span class="text-gold">✓</span> Regeneracja i stabilność procesu suszenia</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 04 -->
-      <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_1.2fr] gap-6 md:gap-10 py-10 border-t border-white/10 group reveal">
-        <div class="flex items-start md:items-center"><span class="font-heading font-black text-5xl sm:text-6xl text-white/10 group-hover:text-gold/30 transition-colors">04</span></div>
-        <div class="flex items-start gap-4">
-          <div>
-            <span class="inline-block mb-2 text-[10px] font-body font-bold uppercase tracking-wider bg-gold text-obsidian px-2 py-0.5">NOWOŚĆ</span>
-            <h3 class="font-heading font-bold text-xl sm:text-2xl text-concrete uppercase tracking-tight">Projektowanie CAD, druk 3D i frezowanie CNC</h3>
-          </div>
-        </div>
-        <div>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed mb-4">Projektujemy w CAD, a następnie wykonujemy detal na własnym zapleczu — drukujemy 3D z tworzyw technicznych albo frezujemy CNC. Od pomysłu do gotowej części.</p>
-          <ul class="space-y-1.5 text-concrete/80 text-xs sm:text-sm">
-            <li><span class="text-gold">✓</span> Projekt i model 3D w CAD</li>
-            <li><span class="text-gold">✓</span> Wydruk 3D — tworzywa techniczne</li>
-            <li><span class="text-gold">✓</span> Frezowanie CNC detali i przyrządów</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 05 -->
-      <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_1.2fr] gap-6 md:gap-10 py-10 border-t border-white/10 group reveal">
-        <div class="flex items-start md:items-center"><span class="font-heading font-black text-5xl sm:text-6xl text-white/10 group-hover:text-gold/30 transition-colors">05</span></div>
-        <div class="flex items-start gap-4">
-          <div><h3 class="font-heading font-bold text-xl sm:text-2xl text-concrete uppercase tracking-tight">Relokacja i uruchamianie</h3></div>
-        </div>
-        <div>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed mb-4">Pomagamy w relokacji oraz ponownym uruchomieniu wtryskarek i robotów — od demontażu i zabezpieczenia maszyny, przez transport i montaż, po pierwszy rozruch produkcyjny.</p>
-          <ul class="space-y-1.5 text-concrete/80 text-xs sm:text-sm">
-            <li><span class="text-gold">✓</span> Demontaż i zabezpieczenie maszyn</li>
-            <li><span class="text-gold">✓</span> Transport, montaż i poziomowanie</li>
-            <li><span class="text-gold">✓</span> Uruchomienie i szkolenie obsługi</li>
-          </ul>
-        </div>
+      <div id="cases" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <article class="case-card reveal" data-cat="wtryskarki">
+          <a href="#galeria" data-case="engel-zwarcie" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r10_engel_2.jpg" alt="Siłownik zwarcia po demontażu" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Wtryskarki</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Uszczelnienia siłownika zwarcia – Engel bezkolumnowy</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Ciało obce w siłowniku zwarcia – znalezione i usunięte, zanim doszło do poważnej awarii.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 4 zdjęcia</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="elektronika">
+          <a href="#galeria" data-case="can-zasilanie" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r05_psu_1.jpg" alt="Magistrala CAN – przed naprawą" loading="lazy" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Elektronika i diagnostyka</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Diagnostyka magistrali CAN i zasilania 24 V</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Pomiary oscyloskopem przy maszynie: zakłócenia CAN i tętnienia zasilacza, których multimetr nie pokaże.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 5 zdjęć</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="roboty">
+          <a href="#galeria" data-case="wemo-os-x" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r07_wemo_1.jpg" alt="Robot Wemo na wtryskarce" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Roboty</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Wymiana pękniętego profilu osi X – robot Wemo</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Pęknięty profil nośny osi X wymieniony w ok. 6 roboczogodzin, z testem pracy na nagraniu.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 4 zdjęcia</span><span class="inline-flex items-center gap-1.5 text-gold"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg> wideo</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="wtryskarki">
+          <a href="#galeria" data-case="km-poduszka" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r08_km_2.jpg" alt="Demontaż zespołu suwnicą" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Wtryskarki</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Naprawa poduszki zwarciowej – KraussMaffei 2700</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Naprawa kluczowego zespołu układu zamykania – wykonana priorytetowo, w sobotę.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 3 zdjęcia</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="roboty cnc">
+          <a href="#galeria" data-case="sepro-os-z" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r06_sepro_2.jpg" alt="Uszkodzony pasek osi Z" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Roboty</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Wymiana paska i rolki osi Z – robot Sepro</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Nowa rolka wykonana na tokarce CNC – robot pracował jeszcze tego samego dnia.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 3 zdjęcia</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="wtryskarki">
+          <a href="#galeria" data-case="engel-szybki-ruch" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r09_engel_3.jpg" alt="Demontaż siłownika" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Wtryskarki</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Uszczelnienia siłownika szybkiego ruchu – Engel</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Nowe uszczelnienia siłownika szybkiego ruchu, montowane dedykowanymi narzędziami.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 4 zdjęcia</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="wtryskarki">
+          <a href="#galeria" data-case="arburg" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r04_arburg_1.jpg" alt="Jednostka wtrysku Arburg" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Wtryskarki</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Wymiana uszczelnień wtryskarki Arburg</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Uszczelnienia jednostki zamykania i wtrysku u producenta odblasków dla branży automotive.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 5 zdjęć</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="peryferia">
+          <a href="#galeria" data-case="motan-sita" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r02_motan_1.jpg" alt="Sito molekularne" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Urządzenia peryferyjne</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Wymiana sit molekularnych w 5 suszarkach Motan</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Blisko 500 kg nowego sita molekularnego, skuteczność potwierdzona pomiarem punktu rosy.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 3 zdjęcia</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="peryferia">
+          <a href="#galeria" data-case="obrotnica" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r03_obrotnica_1.jpg" alt="Obrotnica form wtryskowych" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">Urządzenia peryferyjne</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Naprawa obrotnicy form wtryskowych</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Diagnostyka i naprawa dla podwykonawcy m.in. Grupy Volkswagen, Tesli i Toyoty.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 1 zdjęcie</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="case-card reveal" data-cat="cnc">
+          <a href="#galeria" data-case="uchwyty-eoat" class="group w-full h-full text-left flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-industrial-slate hover:border-gold/50 hover:-translate-y-1 transition-all duration-300">
+            <div class="relative aspect-[4/3] overflow-hidden bg-black">
+              <img src="img/thumbs/r01_uchwyty_1.jpg" alt="Uchwyty w chwytakowni klienta" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold">CAD i druk 3D</span>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-heading font-bold uppercase text-base leading-snug">Uchwyty na chwytaki robotów</h3>
+              <p class="text-concrete/60 text-sm mt-3 leading-relaxed flex-1">Dedykowane uchwyty EOAT zaprojektowane w CAD i wykonane w technologii druku 3D.</p>
+              <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-concrete/50">
+                <span class="flex items-center gap-4"><span class="inline-flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg> 2 zdjęcia</span></span>
+                <span class="inline-flex items-center gap-1.5 text-gold font-semibold text-sm">Zobacz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- Sekcja DRUK 3D I CNC -->
-  <section id="druk3d" class="bg-industrial-slate py-28 sm:py-36 px-6 sm:px-10 lg:px-20 relative overflow-hidden">
-    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+  <!-- MARKI -->
+  <section class="py-20 sm:py-24 px-5 sm:px-8 bg-industrial-slate">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-10 items-center">
       <div class="reveal">
-        <span class="text-gold text-xs font-body uppercase tracking-[0.2em]">Własne zaplecze technologiczne</span>
-        <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl lg:text-5xl text-concrete mt-4 tracking-[-0.02em] leading-tight">Drukarka 3D do tworzyw technicznych i frezarka CNC</h2>
-        <p class="text-concrete/60 font-body text-sm mt-6 leading-relaxed">Posiadamy drukarkę 3D umożliwiającą druk z tworzyw technicznych oraz frezarkę CNC. Dzięki temu chwytaki EOAT, przyrządy i części zamienne wykonujemy u siebie — szybciej i pod pełną kontrolą.</p>
-
-        <div class="mt-8 space-y-6">
-          <div>
-            <h4 class="font-heading font-bold text-concrete uppercase text-sm tracking-wide">Druk 3D z tworzyw technicznych</h4>
-            <p class="text-concrete/50 font-body text-xs mt-1">Wydruki użytkowe i funkcjonalne — chwytaki, adaptery, osłony i przyrządy.</p>
-            <div class="mt-3 flex flex-wrap gap-1.5">
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PA6</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PA12</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PA + włókno węglowe</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PA + włókno szklane</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PETG</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PC</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">TPU</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">ABS</span>
-              <span class="text-[10px] font-body font-semibold uppercase tracking-wider text-gold/90 border border-gold/30 px-2 py-0.5">PLA</span>
-            </div>
-            <p class="text-concrete/40 font-body text-[11px] mt-2.5 leading-relaxed">Pracujemy m.in. z poliamidami (PA6, PA12) — także w wersjach z włóknem węglowym i szklanym dla zwiększonej wytrzymałości i sztywności, a także z PETG, poliwęglanem (PC), TPU, ABS i PLA.</p>
-          </div>
-          <div>
-            <h4 class="font-heading font-bold text-concrete uppercase text-sm tracking-wide">Frezowanie CNC</h4>
-            <p class="text-concrete/50 font-body text-xs mt-1">Precyzyjne detale z metalu i tworzyw — przyrządy, formy pomocnicze, części zamienne.</p>
-          </div>
-          <div>
-            <h4 class="font-heading font-bold text-concrete uppercase text-sm tracking-wide">Projektowanie CAD</h4>
-            <p class="text-concrete/50 font-body text-xs mt-1">Modelujemy w CAD, przygotowujemy pliki do druku 3D lub obróbki CNC.</p>
-          </div>
-        </div>
-        <a href="#kontakt" class="mt-10 inline-flex items-center gap-2 bg-gold text-obsidian font-body font-semibold text-sm px-6 py-3.5 hover:bg-concrete transition-colors">Zapytaj o wycenę &rarr;</a>
+        <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl tracking-[-0.02em]">Marki, w których się specjalizujemy</h2>
+        <p class="text-concrete/60 mt-5 leading-relaxed">Znamy te maszyny od środka. Serwisujemy także m.in. wtryskarki Arburg i roboty Wemo.</p>
       </div>
-
-      <div class="grid grid-cols-2 gap-3 reveal">
-        <div class="relative border border-gold/20 overflow-hidden h-64">
-          <img src="https://media.base44.com/images/public/6abf74690d907898717e6274/1df36e113_generated_4a03b963.jpg" class="w-full h-full object-cover" alt="Druk 3D">
-          <p class="absolute bottom-0 left-0 right-0 bg-obsidian/80 text-concrete text-xs font-body px-3 py-2">Druk 3D</p>
-        </div>
-        <div class="relative border border-gold/20 overflow-hidden h-64">
-          <img src="https://media.base44.com/images/public/6abf74690d907898717e6274/d187a1d3b_generated_c5b21220.jpg" class="w-full h-full object-cover" alt="Frezowanie CNC">
-          <p class="absolute bottom-0 left-0 right-0 bg-obsidian/80 text-concrete text-xs font-body px-3 py-2">Frezowanie CNC</p>
-        </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal">
+        <div class="h-24 rounded-2xl bg-white px-6 py-4 flex items-center justify-center"><img src="img/loga/sepro.png" alt="SEPRO Group" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+        <div class="h-24 rounded-2xl bg-white px-6 py-4 flex items-center justify-center"><img src="img/loga/engel.png" alt="ENGEL" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+        <div class="h-24 rounded-2xl bg-white px-6 py-4 flex items-center justify-center"><img src="img/loga/krauss_maffei.png" alt="KraussMaffei" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+        <div class="h-24 rounded-2xl bg-white px-6 py-4 flex items-center justify-center"><img src="img/loga/wittmann.png" alt="Wittmann" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+        <div class="h-24 rounded-2xl bg-white px-6 py-4 flex items-center justify-center"><img src="img/loga/piovan.png" alt="Piovan" loading="lazy" class="max-h-full max-w-full object-contain"></div>
+        <div class="h-24 rounded-2xl bg-white px-6 py-4 flex items-center justify-center"><img src="img/loga/motan.png" alt="Motan" loading="lazy" class="max-h-full max-w-full object-contain"></div>
       </div>
     </div>
   </section>
 
-  <!-- Sekcja MARKI -->
-  <section class="bg-obsidian py-28 sm:py-36 px-6 sm:px-10 lg:px-20">
-    <div class="max-w-2xl mx-auto text-center mb-16 reveal">
-      <span class="text-gold text-xs font-body uppercase tracking-[0.2em]">Specjalizacja</span>
-      <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl lg:text-5xl text-concrete mt-4 tracking-[-0.02em]">Marki, w których się specjalizujemy</h2>
-    </div>
-
-    <div class="mb-14 reveal">
-      <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
-        <div class="bg-white border border-white/10 h-20 flex items-center justify-center px-3 py-3"><img src="img/03_4ad36e5bb8.png" alt="SEPRO GROUP" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 flex items-center justify-center px-3 py-3"><img src="img/04_5cbaf6fa95.png" alt="ENGEL" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 flex items-center justify-center px-3 py-3"><img src="img/05_c552e41add.png" alt="KraussMaffei" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 flex items-center justify-center px-3 py-3"><img src="img/06_4619ffda5d.png" alt="Wittmann" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 flex items-center justify-center px-3 py-3"><img src="img/07_2949d6866b.png" alt="Piovan" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 flex items-center justify-center px-3 py-3"><img src="img/08_0d226a0201.png" alt="Motan" class="max-h-full max-w-full object-contain"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sekcja GALERIA z Lightboxem -->
-  <section id="galeria" class="bg-industrial-slate py-28 sm:py-36 px-6 sm:px-10 lg:px-20 overflow-hidden">
-    <div class="mb-14 max-w-2xl reveal">
-      <span class="text-gold text-xs font-body uppercase tracking-[0.2em]">Galeria</span>
-      <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl lg:text-5xl text-concrete mt-4 tracking-[-0.02em]">Zrealizowane projekty</h2>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-12">
-      <article class="realizacja reveal">
-        <div class="slider group relative h-80 sm:h-96 border border-white/10 overflow-hidden cursor-pointer multi" data-title="Uchwyty na chwytaki robotów">
-          <img loading="lazy" src="img/09_8363d15e2a.jpg" alt="Chwytaki robotów zawieszone na uchwytach z druku 3D" class="slide is-active" draggable="false">
-          <img loading="lazy" src="img/10_f2ca5c8072.jpg" alt="Model CAD uchwytu na chwytak" class="slide" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-          <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 02</span>
-          <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-          <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-          <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Uchwyty na chwytaki robotów</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <p class="text-concrete/60 font-body text-sm leading-relaxed mt-4">Zaprojektowaliśmy w CAD dedykowane uchwyty do przechowywania chwytaków (EOAT) robotów przemysłowych, dopasowane do geometrii narzędzi i układu chwytakowni klienta. Wykonanie detali w technologii druku 3D pozwoliło spełnić wszystkie wymagania przy zachowaniu optymalnego kosztu produkcji. Uporządkowane stanowisko skraca czas przezbrojeń i ogranicza ryzyko uszkodzenia chwytaków.</p>
-      </article>
-
-      <article class="realizacja reveal">
-        <div class="slider group relative h-80 sm:h-96 border border-white/10 overflow-hidden cursor-pointer multi" data-title="Wymiana sit molekularnych w 5 suszarkach Motan">
-          <img loading="lazy" src="img/11_e9850c5a23.jpg" alt="Beczki z sitem molekularnym" class="slide is-active" draggable="false">
-          <img loading="lazy" src="img/12_58a8cf345a.jpg" alt="Pomiar punktu rosy" class="slide" draggable="false">
-          <img loading="lazy" src="img/13_4b01f450e9.jpg" alt="Pomiar punktu rosy" class="slide" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-          <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 03</span>
-          <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-          <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-          <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Wymiana sit molekularnych w 5 suszarkach Motan</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <p class="text-concrete/60 font-body text-sm leading-relaxed mt-4">Wymieniliśmy sita molekularne w 5 suszarkach Motan u czołowego producenta wyrobów z tworzyw sztucznych z województwa kujawsko-pomorskiego – łącznie blisko 500 kg złoża. Zużyte sito traci zdolność adsorpcji wilgoci, przez co suszarka nie osiąga wymaganego punktu rosy, a niedosuszony granulat powoduje wady wyprasek. Skuteczność wymiany potwierdziliśmy pomiarem punktu rosy.</p>
-      </article>
-
-      <article class="realizacja reveal">
-        <div class="slider group relative h-80 sm:h-96 border border-white/10 overflow-hidden cursor-pointer" data-title="Naprawa obrotnicy form wtryskowych">
-          <img loading="lazy" src="img/14_5d852f844b.jpg" alt="Obrotnica form wtryskowych" class="slide is-active" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Naprawa obrotnicy form wtryskowych</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <p class="text-concrete/60 font-body text-sm leading-relaxed mt-4">Przeprowadziliśmy diagnostykę i naprawę obrotnicy form wtryskowych u podwykonawcy branży motoryzacyjnej, dostarczającego komponenty m.in. dla Grupy Volkswagen, Tesli i Toyoty. Sprawna obrotnica umożliwia bezpieczne obracanie ciężkich form podczas ich serwisu i przezbrojeń – w produkcji dla automotive przekłada się to bezpośrednio na ciągłość dostaw.</p>
-      </article>
-
-      <article class="realizacja reveal">
-        <div class="slider group relative h-80 sm:h-96 border border-white/10 overflow-hidden cursor-pointer multi" data-title="Wymiana uszczelnień wtryskarki Arburg">
-          <img loading="lazy" src="img/15_a77a253f3c.jpg" alt="Jednostka wtrysku Arburg" class="slide is-active" draggable="false">
-          <img loading="lazy" src="img/16_f6b1d305a7.jpg" alt="Cylinder jednostki wtrysku" class="slide" draggable="false">
-          <img loading="lazy" src="img/17_d9a8a4fc32.jpg" alt="Element z nowymi uszczelnieniami" class="slide" draggable="false">
-          <img loading="lazy" src="img/18_0af0aebf49.jpg" alt="Tłoczyska z nowymi uszczelnieniami" class="slide" draggable="false">
-          <img loading="lazy" src="img/19_4a95a5253f.jpg" alt="Rozebrany element wtryskarki" class="slide" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-          <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 05</span>
-          <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-          <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-          <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button><button type="button" class="dot" aria-label="Zdjęcie 4"></button><button type="button" class="dot" aria-label="Zdjęcie 5"></button></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Wymiana uszczelnień wtryskarki Arburg</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <p class="text-concrete/60 font-body text-sm leading-relaxed mt-4">Wymieniliśmy uszczelnienia jednostki zamykania oraz jednostki wtrysku na wtryskarce Arburg u producenta odblasków dla przemysłu samochodowego. Zużyte uszczelnienia prowadzą do wycieków oleju, spadków ciśnienia i niestabilności parametrów procesu. Wymiana przywraca szczelność układu hydraulicznego oraz powtarzalność cyklu wtrysku.</p>
-      </article>
-
-      <article class="realizacja reveal">
-        <div class="slider group relative h-80 sm:h-96 border border-white/10 overflow-hidden cursor-pointer multi" data-title="Naprawa poduszki zwarciowej – KraussMaffei 2700">
-          <img loading="lazy" src="img/20_fe77985960.jpg" alt="Demontaż poduszki zwarciowej wtryskarki KraussMaffei przy użyciu suwnicy" data-label="Demontaż zespołu suwnicą" class="slide is-active" draggable="false">
-          <img loading="lazy" src="img/21_f12677098c.jpg" alt="Poduszka zwarciowa z segmentami ryglującymi" data-label="Poduszka zwarciowa" class="slide" draggable="false">
-          <img loading="lazy" src="img/22_30059f4be6.jpg" alt="Zdemontowany zespół poduszki zwarciowej" data-label="Zespół po demontażu" class="slide" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-          <span class="slide-label absolute top-7 left-4 z-20 bg-obsidian/80 border border-gold/40 text-gold font-body font-semibold text-[11px] uppercase tracking-wider px-2.5 py-1"></span>
-          <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 03</span>
-          <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-          <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-          <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Naprawa poduszki zwarciowej – KraussMaffei 2700</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <p class="text-concrete/60 font-body text-sm leading-relaxed mt-4">Naprawa poduszki zwarciowej na wtryskarce KraussMaffei 2700 – zespołu układu zamykania, który rygluje kolumnę i przenosi pełną siłę zwarcia podczas wtrysku. Usterka w tym miejscu oznacza całkowite zatrzymanie maszyny. Prace objęły demontaż ciężkiego zespołu z użyciem suwnicy, naprawę oraz ponowny montaż i uruchomienie wtryskarki.</p>
-        <p class="text-concrete/80 font-body text-sm leading-relaxed mt-3 border-l-2 border-gold pl-4"><span class="text-gold font-semibold">Interwencja priorytetowa w sobotę</span> – maszyna wróciła do pracy bez utraty kolejnych dni produkcyjnych.</p>
-      </article>
-
-      <article class="realizacja reveal">
-        <div class="slider group relative h-80 sm:h-96 border border-white/10 overflow-hidden cursor-pointer multi" data-title="Uszczelnienia siłownika szybkiego ruchu – Engel">
-          <img loading="lazy" src="img/23_0e3875b218.jpg" alt="Zdemontowane elementy siłownika szybkiego ruchu" data-label="Demontaż siłownika" class="slide is-active" draggable="false">
-          <img loading="lazy" src="img/24_4996f0b112.jpg" alt="Dedykowane narzędzie do montażu uszczelnień" data-label="Narzędzie do montażu uszczelnień" class="slide" draggable="false">
-          <img loading="lazy" src="img/25_5a497d3f50.jpg" alt="Tłok siłownika z nowymi uszczelnieniami i pierścieniami prowadzącymi" data-label="Tłok z nowymi uszczelnieniami" class="slide" draggable="false">
-          <img loading="lazy" src="img/26_5e60a2618c.jpg" alt="Montaż siłownika szybkiego ruchu" data-label="Montaż siłownika" class="slide" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-          <span class="slide-label absolute top-7 left-4 z-20 bg-obsidian/80 border border-gold/40 text-gold font-body font-semibold text-[11px] uppercase tracking-wider px-2.5 py-1"></span>
-          <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 04</span>
-          <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-          <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-          <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button><button type="button" class="dot" aria-label="Zdjęcie 4"></button></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Uszczelnienia siłownika szybkiego ruchu – Engel</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <p class="text-concrete/60 font-body text-sm leading-relaxed mt-4">Wymiana uszczelnień siłownika szybkiego ruchu na wtryskarce Engel. Siłownik odpowiada za szybkie zamykanie i otwieranie formy – zużyte uszczelnienia powodują przecieki wewnętrzne, spadek prędkości i niestabilny ruch płyty, a w efekcie wydłużenie cyklu i wycieki oleju. Po demontażu i oczyszczeniu elementów zamontowaliśmy nowe uszczelnienia, a siłownik złożyliśmy i sprawdziliśmy na maszynie.</p>
-        <p class="text-concrete/80 font-body text-sm leading-relaxed mt-3 border-l-2 border-gold pl-4"><span class="text-gold font-semibold">Dedykowane narzędzia montażowe</span> – uszczelnienia zakładamy bez ryzyka naciągnięcia i uszkodzenia krawędzi uszczelniających, co przekłada się na ich trwałość.</p>
-      </article>
-
-      <article class="realizacja reveal md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4 items-start">
-        <div class="slider group relative h-96 lg:h-[34rem] border border-white/10 overflow-hidden cursor-pointer multi" data-title="Wymiana paska i rolki osi Z – robot Sepro">
-            <img loading="lazy" src="img/27_6582a305be.jpg" alt="Uszkodzony pasek zębaty osi Z: zniszczone zęby i wystające linki nośne" data-label="Uszkodzony pasek osi Z" class="slide is-active" draggable="false">
-            <img loading="lazy" src="img/28_7f05528986.jpg" alt="Uszkodzona rolka osi Z ze zniszczonym łożyskiem" data-label="Uszkodzona rolka – zniszczone łożysko" class="slide" draggable="false">
-            <img loading="lazy" src="img/29_a50eab80c9.jpg" alt="Oś Z robota Sepro: prowadnica liniowa, rolka i pasek" data-label="Oś Z robota Sepro" class="slide" draggable="false">
-            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-            <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-            <span class="slide-label absolute top-7 left-4 z-20 bg-obsidian/80 border border-gold/40 text-gold font-body font-semibold text-[11px] uppercase tracking-wider px-2.5 py-1"></span>
-            <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 03</span>
-            <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-            <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-            <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button></div>
-            <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-              <h4 class="font-heading font-bold text-concrete uppercase text-base">Wymiana paska i rolki osi Z – robot Sepro</h4>
-              <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-            </div>
-        </div>
-        <div class="space-y-4 lg:pt-2">
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Zakres naprawy.</span> W robocie Sepro uszkodzeniu uległ pasek zębaty osi Z – zniszczone zęby i wystające linki nośne – oraz rolka, w której rozpadło się łożysko. Wymieniliśmy pasek, a nową rolkę wykonaliśmy na miejscu na tokarce CNC. Dzięki temu robot wrócił do pracy jeszcze tego samego dnia. Oczekiwanie na część od producenta oznaczałoby co najmniej kilka dni roboczych przestoju maszyny.</p>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Naciąg pasa.</span> Naciąg ustawiamy i weryfikujemy profesjonalnym miernikiem Optibelt, który wyznacza go na podstawie częstotliwości drgań własnych pasa. W osi pionowej to parametr krytyczny: zbyt słaby naciąg grozi przeskokiem zębów, utratą pozycji i kolizją chwytaka z formą, a zbyt mocny przeciąża łożyska rolek i przyspiesza zużycie pasa. Pomiar przyrządem zamiast „na wyczucie” daje powtarzalny wynik zgodny z wytycznymi.</p>
-          <p class="text-concrete/80 font-body text-sm leading-relaxed border-l-2 border-gold pl-4"><span class="text-gold font-semibold">Własna obróbka CNC = krótszy przestój.</span> Gdy brakuje części, wykonujemy ją sami – zamiast zatrzymywać produkcję w oczekiwaniu na dostawę.</p>
-        </div>
-      </article>
-
-      <article class="realizacja reveal md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4 items-start">
-        <div class="slider group relative h-80 sm:h-96 lg:h-[30rem] border border-white/10 overflow-hidden cursor-pointer multi lg:order-2" data-title="Wymiana pękniętego profilu osi X – robot Wemo">
-            <img loading="lazy" src="img/30_2f0b85e8ae.jpg" alt="Robot Wemo Design X zamontowany na wtryskarce" data-label="Robot Wemo na wtryskarce" class="slide is-active" draggable="false">
-            <img loading="lazy" src="img/31_f405ba3a14.jpg" alt="Demontaż osi X robota Wemo" data-label="Demontaż osi X" class="slide" draggable="false">
-            <img loading="lazy" src="img/32_c66e906045.jpg" alt="Pęknięcie profilu nośnego osi X" data-label="Pęknięty profil osi X" class="slide" draggable="false">
-            <img loading="lazy" src="img/33_8fccee8f17.jpg" alt="Pęknięty profil osi X obok nowego profilu" data-label="Stary i nowy profil osi X" class="slide" draggable="false">
-            <video class="slide" data-label="Po naprawie – test pracy robota" data-dur="15.7s" aria-label="Robot Wemo po naprawie podczas testu pracy" muted loop playsinline preload="none" poster="img/34_f1342ab016.jpg" src="img/35_2a2079f14d.mp4"></video>
-            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-            <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-            <span class="slide-label absolute top-7 left-4 z-20 bg-obsidian/80 border border-gold/40 text-gold font-body font-semibold text-[11px] uppercase tracking-wider px-2.5 py-1"></span>
-            <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 05</span>
-            <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-            <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-            <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button><button type="button" class="dot" aria-label="Zdjęcie 4"></button><button type="button" class="dot" aria-label="Zdjęcie 5"></button></div>
-            <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-              <h4 class="font-heading font-bold text-concrete uppercase text-base">Wymiana pękniętego profilu osi X – robot Wemo</h4>
-              <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-            </div>
-        </div>
-        <div class="space-y-4 lg:pt-2 lg:order-1">
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Diagnoza.</span> W robocie Wemo serii Design X stwierdziliśmy pęknięcie aluminiowego profilu nośnego osi X. To usterka krytyczna: pod wpływem cyklicznych obciążeń dynamicznych pęknięcie postępuje, obniżając sztywność osi i dokładność pozycjonowania, a w skrajnym przypadku grozi oderwaniem osi wraz z chwytakiem nad otwartą formą.</p>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Naprawa.</span> Zdemontowaliśmy oś X, przenieśliśmy osprzęt na nowy profil, zmontowaliśmy całość i ponownie uruchomiliśmy robota. Poprawność pracy potwierdziliśmy testem w cyklu – nagranie z testu znajduje się w galerii.</p>
-          <p class="text-concrete/80 font-body text-sm leading-relaxed border-l-2 border-gold pl-4"><span class="text-gold font-semibold">Czas realizacji: ok. 6 roboczogodzin.</span> Robot wrócił do produkcji tego samego dnia.</p>
-        </div>
-      </article>
-
-      <article class="realizacja reveal md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4 items-start">
-        <div class="slider group relative h-80 sm:h-96 lg:h-[30rem] border border-white/10 overflow-hidden cursor-pointer multi" data-title="Uszczelnienia siłownika zwarcia – Engel bezkolumnowy">
-            <img loading="lazy" src="img/36_b051f5fcb8.jpg" alt="Otwarty siłownik zwarcia wtryskarki bezkolumnowej Engel" data-label="Siłownik zwarcia po demontażu" class="slide is-active" draggable="false">
-            <img loading="lazy" src="img/37_0828328546.jpg" alt="Zdeformowana śruba znaleziona wewnątrz siłownika zwarcia" data-label="Ciało obce: uszkodzona śruba" class="slide" draggable="false">
-            <img loading="lazy" src="img/38_e29d67db03.jpg" alt="Rysy na powierzchni wewnętrznej siłownika spowodowane ciałem obcym" data-label="Rysy na powierzchni roboczej" class="slide" draggable="false">
-            <img loading="lazy" src="img/39_f5495aab88.jpg" alt="Zbliżenie gniazd uszczelnień i powierzchni roboczych siłownika" data-label="Gniazda uszczelnień – zbliżenie" class="slide" draggable="false">
-            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-            <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-            <span class="slide-label absolute top-7 left-4 z-20 bg-obsidian/80 border border-gold/40 text-gold font-body font-semibold text-[11px] uppercase tracking-wider px-2.5 py-1"></span>
-            <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 04</span>
-            <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-            <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-            <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button><button type="button" class="dot" aria-label="Zdjęcie 4"></button></div>
-            <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-              <h4 class="font-heading font-bold text-concrete uppercase text-base">Uszczelnienia siłownika zwarcia – Engel bezkolumnowy</h4>
-              <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-            </div>
-        </div>
-        <div class="space-y-4 lg:pt-2">
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Zakres naprawy.</span> Wymiana uszczelnień siłownika zwarcia na bezkolumnowej wtryskarce Engel. Siłownik zwarcia wytwarza siłę, która utrzymuje formę zamkniętą podczas wtrysku. Po otwarciu cylindra znaleźliśmy w jego wnętrzu starą, zdeformowaną śrubę – ciało obce, które przemieszczało się w siłowniku i rysowało jego powierzchnie robocze. Usunęliśmy je, oczyściliśmy cylinder, oceniliśmy stan powierzchni i zamontowaliśmy nowe uszczelnienia.</p>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Dlaczego to było groźne.</span> Metalowy element pracujący pod wysokim ciśnieniem między tłokiem a cylindrem pogłębia rysy przy każdym cyklu i niszczy nowe uszczelnienia. Prowadzi to do przecieków wewnętrznych i spadku siły zwarcia – a ta oznacza wypływki na wypraskach i ryzyko uszkodzenia formy. W skrajnym przypadku ciało obce mogło zakleszczyć się między tłokiem a cylindrem, co grozi trwałym zniszczeniem siłownika, kosztowną regeneracją lub wymianą całego zespołu i wielotygodniowym przestojem.</p>
-          <p class="text-concrete/80 font-body text-sm leading-relaxed border-l-2 border-gold pl-4"><span class="text-gold font-semibold">Szukamy przyczyny, nie tylko objawu.</span> Sama wymiana uszczelnień bez znalezienia śruby skończyłaby się ich ponownym zniszczeniem w krótkim czasie.</p>
-        </div>
-      </article>
-
-      <article class="realizacja reveal md:col-span-2">
-        <div class="slider contain group relative h-80 sm:h-96 lg:h-[34rem] border border-white/10 overflow-hidden cursor-pointer multi" data-title="Diagnostyka magistrali CAN i zasilania 24 V">
-          <img loading="lazy" src="img/40_5290c6260f.jpg" alt="Przebieg CAN_H i CAN_L przed naprawą: silne oscylacje i zniekształcone zbocza" data-label="Magistrala CAN – przed naprawą" class="slide is-active" draggable="false">
-          <img loading="lazy" src="img/41_630062e97f.jpg" alt="Przebieg CAN_H i CAN_L po naprawie: czyste zbocza i stabilne poziomy" data-label="Magistrala CAN – po naprawie" class="slide" draggable="false">
-          <img loading="lazy" src="img/42_971804a380.jpg" alt="Uszkodzony zasilacz: tętnienia ok. 2 V, a multimetr pokazuje poprawne 25,46 V" data-label="Zasilacz 24 V – uszkodzony" class="slide" draggable="false">
-          <img loading="lazy" src="img/43_06126b518b.jpg" alt="Sprawny zasilacz: stabilne napięcie wyjściowe" data-label="Zasilacz 24 V – sprawny" class="slide" draggable="false">
-          <img loading="lazy" src="img/44_0064e7f51a.jpg" alt="Zasilacz laboratoryjny jako punkt odniesienia" data-label="Zasilacz laboratoryjny – odniesienie" class="slide" draggable="false">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-          <div class="segs absolute top-3 left-3 right-3 flex gap-1.5 z-20"><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span><span class="seg"><i></i></span></div>
-          <span class="slide-label absolute top-7 left-4 z-20 bg-obsidian/80 border border-gold/40 text-gold font-body font-semibold text-[11px] uppercase tracking-wider px-2.5 py-1"></span>
-          <span class="counter absolute top-7 right-4 z-20 font-heading font-bold text-xs text-concrete/90 tracking-wider">01 / 05</span>
-          <button type="button" class="nav-btn prev" aria-label="Poprzednie zdjęcie">&#8249;</button>
-          <button type="button" class="nav-btn next" aria-label="Następne zdjęcie">&#8250;</button>
-          <div class="dots absolute bottom-5 right-4 z-20 flex gap-1.5"><button type="button" class="dot" aria-label="Zdjęcie 1"></button><button type="button" class="dot" aria-label="Zdjęcie 2"></button><button type="button" class="dot" aria-label="Zdjęcie 3"></button><button type="button" class="dot" aria-label="Zdjęcie 4"></button><button type="button" class="dot" aria-label="Zdjęcie 5"></button></div>
-          <div class="absolute bottom-4 left-4 right-24 z-20 pointer-events-none">
-            <h4 class="font-heading font-bold text-concrete uppercase text-base">Diagnostyka magistrali CAN i zasilania 24 V</h4>
-            <span class="text-gold text-xs">Kliknij, aby powiększyć 🔍</span>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4 mt-4">
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Magistrala CAN.</span> CAN to sieć, przez którą sterownik maszyny komunikuje się z napędami, modułami we/wy i robotem. Pomiar oscyloskopem przed naprawą pokazał silne oscylacje i zniekształcone zbocza sygnałów CAN_H i CAN_L – typowy objaw problemów z impedancją linii, terminacją lub połączeniami. Taki sygnał powoduje błędy transmisji, ramki błędów, a w skrajnym przypadku odłączenie węzła od magistrali i sporadyczne, trudne do wyjaśnienia zatrzymania maszyny. Po naprawie zbocza są czyste, a poziomy sygnałów stabilne.</p>
-          <p class="text-concrete/60 font-body text-sm leading-relaxed"><span class="text-concrete font-semibold">Zasilanie 24 V.</span> Uszkodzony zasilacz miał na wyjściu tętnienia o amplitudzie ok. 2 V (24,65–26,67 V), podczas gdy multimetr pokazywał poprawne 25,46 V – uśrednia on napięcie i takiej usterki po prostu nie widzi. Porównanie ze sprawnym zasilaczem i zasilaczem laboratoryjnym jednoznacznie potwierdziło przyczynę. Niestabilne 24 V zasilające sterownik, czujniki i zawory prowadzi do losowych resetów, fałszywych sygnałów i błędów komunikacji.</p>
-          <p class="lg:col-span-2 text-concrete/80 font-body text-sm leading-relaxed border-l-2 border-gold pl-4"><span class="text-gold font-semibold">Mobilny oscyloskop na hali.</span> Pomiary wykonujemy przenośnym oscyloskopem bezpośrednio przy maszynie, w trakcie jej pracy – bez demontażu podzespołów i wożenia ich do warsztatu. W serwisach maszyn tego typu sprzęt to wciąż rzadkość, a pozwala znaleźć usterki niewidoczne dla multimetru i usunąć przyczynę, zamiast wymieniać części na próbę.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- Sekcja KLIENCI -->
-  <section id="klienci" class="bg-obsidian pt-28 sm:pt-36 px-6 sm:px-10 lg:px-20">
-    <div class="max-w-2xl mx-auto text-center mb-16 reveal">
-      <span class="text-gold text-xs font-body uppercase tracking-[0.2em]">Zaufali nam</span>
-      <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl lg:text-5xl text-concrete mt-4 tracking-[-0.02em]">Firmy, z którymi współpracujemy</h2>
-    </div>
-    <div class="reveal">
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div class="bg-white border border-white/10 h-20 sm:h-24 flex items-center justify-center px-4 py-3 hover:-translate-y-1 transition-transform duration-300"><img src="img/45_a5eace50ec.png" alt="Apator" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 sm:h-24 flex items-center justify-center px-4 py-3 hover:-translate-y-1 transition-transform duration-300"><img src="img/46_2fc7a4d40a.png" alt="Berdal" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 sm:h-24 flex items-center justify-center px-4 py-3 hover:-translate-y-1 transition-transform duration-300"><img src="img/47_a26747a072.png" alt="Hanplast" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 sm:h-24 flex items-center justify-center px-4 py-3 hover:-translate-y-1 transition-transform duration-300"><img src="img/48_4b207ba3c5.png" alt="Keeeper" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 sm:h-24 flex items-center justify-center px-4 py-3 hover:-translate-y-1 transition-transform duration-300"><img src="img/49_3bb081c40c.png" alt="Maflow" class="max-h-full max-w-full object-contain"></div>
-        <div class="bg-white border border-white/10 h-20 sm:h-24 flex items-center justify-center px-4 py-3 hover:-translate-y-1 transition-transform duration-300"><img src="img/50_72856237d6.png" alt="Siropol" class="max-h-full max-w-full object-contain"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Modal Lightbox Galeryjny -->
-  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 hidden items-center justify-center p-4">
-    <button id="lightbox-close" class="absolute top-6 right-6 text-concrete text-3xl font-bold z-10" aria-label="Zamknij">&times;</button>
-    <button id="lightbox-prev" type="button" class="lb-arrow left-3 sm:left-8" aria-label="Poprzednie zdjęcie">&#8249;</button>
-    <button id="lightbox-next" type="button" class="lb-arrow right-3 sm:right-8" aria-label="Następne zdjęcie">&#8250;</button>
-    <div class="max-w-4xl w-full text-center">
-      <img id="lightbox-img" src="" alt="" class="max-h-[80vh] mx-auto border border-gold/40 shadow-2xl">
-      <video id="lightbox-video" class="max-h-[80vh] w-auto max-w-full mx-auto border border-gold/40 shadow-2xl" controls muted loop playsinline></video>
-      <h3 id="lightbox-caption" class="font-heading font-bold text-gold uppercase text-xl mt-4"></h3>
-      <p id="lightbox-count" class="text-concrete/50 font-body text-xs tracking-wider mt-1"></p>
-    </div>
-  </div>
-
-  <!-- Sekcja PROCES -->
-  <section id="proces" class="bg-obsidian py-28 sm:py-36 px-6 sm:px-10 lg:px-20">
-    <div class="max-w-2xl mb-16 reveal">
-      <span class="text-gold text-xs font-body uppercase tracking-[0.2em]">Metodologia</span>
-      <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl lg:text-5xl text-concrete mt-4 tracking-[-0.02em]">Jak pracujemy</h2>
-      <p class="text-concrete/60 font-body text-sm mt-5 leading-relaxed">Prosty, przewidywalny proces — od zgłoszenia do uruchomienia maszyny lub gotowej części.</p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 reveal">
-      <div class="bg-obsidian p-8 relative">
-        <span class="font-heading font-black text-gold text-3xl">01</span>
-        <h3 class="font-heading font-bold uppercase text-concrete text-base mt-5 mb-3 tracking-tight">Kontakt i opis problemu</h3>
-        <p class="text-concrete/50 font-body text-xs leading-relaxed">Dzwonisz lub piszesz. Zbieramy informacje o maszynie, objawach i warunkach pracy.</p>
-      </div>
-      <div class="bg-obsidian p-8 relative">
-        <span class="font-heading font-black text-gold text-3xl">02</span>
-        <h3 class="font-heading font-bold uppercase text-concrete text-base mt-5 mb-3 tracking-tight">Diagnoza i wycena</h3>
-        <p class="text-concrete/50 font-body text-xs leading-relaxed">Diagnozujemy usterkę na miejscu lub zdalnie i przedstawiamy zakres oraz koszt.</p>
-      </div>
-      <div class="bg-obsidian p-8 relative">
-        <span class="font-heading font-black text-gold text-3xl">03</span>
-        <h3 class="font-heading font-bold uppercase text-concrete text-base mt-5 mb-3 tracking-tight">Naprawa i realizacja</h3>
-        <p class="text-concrete/50 font-body text-xs leading-relaxed">Wykonujemy naprawę, relokację, uruchomienie, prace R&D lub projekt i wydruk 3D / frezowanie CNC.</p>
-      </div>
-      <div class="bg-obsidian p-8 relative">
-        <span class="font-heading font-black text-gold text-3xl">04</span>
-        <h3 class="font-heading font-bold uppercase text-concrete text-base mt-5 mb-3 tracking-tight">Uruchomienie i wsparcie</h3>
-        <p class="text-concrete/50 font-body text-xs leading-relaxed">Przywracamy maszynę do produkcji, przekazujemy wykonane detale i zostajemy w kontakcie.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sekcja KONTAKT z Walidacją -->
-  <section id="kontakt" class="bg-obsidian py-28 sm:py-36 px-6 sm:px-10 lg:px-20 border-t border-white/10">
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-16">
+  <!-- DRUK 3D I CNC -->
+  <section id="druk3d" class="py-24 sm:py-32 px-5 sm:px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
       <div class="reveal">
-        <span class="text-gold text-xs font-body uppercase tracking-[0.2em]"></span>
-        <h2 class="font-heading font-black uppercase text-4xl sm:text-5xl text-concrete mt-4 mb-6 tracking-[-0.02em]">Kontakt</h2>
-        <p class="text-concrete/60 font-body text-sm mb-10 leading-relaxed max-w-md">Opisz maszynę i problem albo detal, który chcesz zaprojektować i wykonać — odpowiemy i ustalimy kolejne kroki.</p>
+        <span class="inline-block text-[11px] font-bold uppercase tracking-wider bg-gold text-black px-2.5 py-1 rounded-full mb-5">Nowość</span>
+        <h2 class="font-heading font-black uppercase text-3xl sm:text-4xl lg:text-5xl tracking-[-0.02em] leading-tight">Drukarka 3D do tworzyw technicznych i frezarka CNC</h2>
+        <p class="text-concrete/60 mt-6 leading-relaxed">Posiadamy drukarkę 3D umożliwiającą druk z tworzyw technicznych oraz frezarkę CNC. Dzięki temu chwytaki EOAT, przyrządy i części zamienne wykonujemy u siebie — szybciej i pod pełną kontrolą.</p>
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="rounded-2xl border border-white/10 bg-industrial-slate p-5">
+            <h3 class="font-heading font-bold uppercase text-sm">Druk 3D</h3>
+            <p class="text-concrete/55 text-sm mt-2 leading-relaxed">Chwytaki, adaptery, osłony i przyrządy.</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-industrial-slate p-5">
+            <h3 class="font-heading font-bold uppercase text-sm">Frezowanie CNC</h3>
+            <p class="text-concrete/55 text-sm mt-2 leading-relaxed">Detale z metalu i tworzyw, części zamienne.</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-industrial-slate p-5">
+            <h3 class="font-heading font-bold uppercase text-sm">Projektowanie CAD</h3>
+            <p class="text-concrete/55 text-sm mt-2 leading-relaxed">Model 3D i pliki do druku lub obróbki.</p>
+          </div>
+        </div>
+        <p class="text-concrete/50 text-sm mt-8 mb-3">Drukujemy m.in. z:</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PA6</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PA12</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PA + włókno węglowe</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PA + włókno szklane</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PETG</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PC</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">TPU</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">ABS</span>
+          <span class="text-xs font-semibold text-gold/90 border border-gold/30 rounded-full px-3 py-1">PLA</span>
+        </div>
+        <a href="#kontakt" class="mt-10 inline-flex items-center gap-2 bg-gold text-black font-semibold px-6 py-3.5 rounded-full hover:bg-concrete transition-colors">Zapytaj o wycenę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="grid grid-cols-2 gap-4 reveal">
+        <figure class="relative rounded-3xl overflow-hidden border border-white/10 aspect-[3/4]">
+          <img src="https://media.base44.com/images/public/6abf74690d907898717e6274/1df36e113_generated_4a03b963.jpg" alt="Druk 3D" loading="lazy" class="w-full h-full object-cover">
+          <figcaption class="absolute left-3 bottom-3 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-xs">Druk 3D</figcaption>
+        </figure>
+        <figure class="relative rounded-3xl overflow-hidden border border-white/10 aspect-[3/4] mt-10">
+          <img src="https://media.base44.com/images/public/6abf74690d907898717e6274/d187a1d3b_generated_c5b21220.jpg" alt="Frezowanie CNC" loading="lazy" class="w-full h-full object-cover">
+          <figcaption class="absolute left-3 bottom-3 rounded-full bg-obsidian/80 backdrop-blur px-3 py-1 text-xs">Frezowanie CNC</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
-        <div class="space-y-6">
-          <div>
-            <p class="text-gold text-[10px] font-body uppercase tracking-wider mb-1">Telefon</p>
-            <a href="tel:+48733590940" class="text-concrete font-heading font-bold text-lg hover:text-gold transition-colors">733 590 940</a>
+  <!-- PROCES -->
+  <section id="proces" class="py-24 sm:py-32 px-5 sm:px-8 bg-industrial-slate">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+        <h2 class="font-heading font-black uppercase text-3xl sm:text-5xl tracking-[-0.02em]">Jak pracujemy</h2>
+        <p class="text-concrete/60 mt-5 leading-relaxed">Prosty, przewidywalny proces — od zgłoszenia do uruchomienia maszyny lub gotowej części.</p>
+      </div>
+      <ol class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
+        <div aria-hidden="true" class="hidden lg:block absolute top-7 left-[12%] right-[12%] h-px bg-gradient-to-r from-gold/0 via-gold/50 to-gold/0"></div>
+        <li class="relative rounded-3xl border border-white/10 bg-obsidian p-7">
+          <span class="relative z-10 w-14 h-14 rounded-full bg-gold text-black font-heading font-black text-lg grid place-items-center">01</span>
+          <h3 class="font-heading font-bold uppercase text-base mt-6">Kontakt i opis problemu</h3>
+          <p class="text-concrete/55 text-sm mt-3 leading-relaxed">Dzwonisz lub piszesz. Zbieramy informacje o maszynie, objawach i warunkach pracy.</p>
+        </li>
+        <li class="relative rounded-3xl border border-white/10 bg-obsidian p-7">
+          <span class="relative z-10 w-14 h-14 rounded-full bg-gold text-black font-heading font-black text-lg grid place-items-center">02</span>
+          <h3 class="font-heading font-bold uppercase text-base mt-6">Diagnoza i wycena</h3>
+          <p class="text-concrete/55 text-sm mt-3 leading-relaxed">Diagnozujemy usterkę na miejscu lub zdalnie i przedstawiamy zakres oraz koszt.</p>
+        </li>
+        <li class="relative rounded-3xl border border-white/10 bg-obsidian p-7">
+          <span class="relative z-10 w-14 h-14 rounded-full bg-gold text-black font-heading font-black text-lg grid place-items-center">03</span>
+          <h3 class="font-heading font-bold uppercase text-base mt-6">Naprawa i realizacja</h3>
+          <p class="text-concrete/55 text-sm mt-3 leading-relaxed">Wykonujemy naprawę, relokację, uruchomienie, prace R&amp;D lub projekt i wydruk 3D / frezowanie CNC.</p>
+        </li>
+        <li class="relative rounded-3xl border border-white/10 bg-obsidian p-7">
+          <span class="relative z-10 w-14 h-14 rounded-full bg-gold text-black font-heading font-black text-lg grid place-items-center">04</span>
+          <h3 class="font-heading font-bold uppercase text-base mt-6">Uruchomienie i wsparcie</h3>
+          <p class="text-concrete/55 text-sm mt-3 leading-relaxed">Przywracamy maszynę do produkcji, przekazujemy wykonane detale i zostajemy w kontakcie.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="px-5 sm:px-8 py-24 sm:py-28">
+    <div class="max-w-5xl mx-auto relative overflow-hidden rounded-[2rem] border border-gold/30 bg-gradient-to-br from-industrial-slate via-obsidian to-industrial-slate px-6 sm:px-14 py-14 sm:py-20 text-center reveal">
+      <div aria-hidden="true" class="absolute -top-24 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] rounded-full bg-gold/10 blur-3xl"></div>
+      <div class="relative">
+        <h2 class="font-heading font-black uppercase text-3xl sm:text-5xl tracking-[-0.02em]">Maszyna stoi?</h2>
+        <p class="text-concrete/70 mt-5 text-lg max-w-xl mx-auto">Zadzwoń albo opisz problem. Odpowiemy i ustalimy kolejne kroki.</p>
+        <div class="mt-9 flex flex-col sm:flex-row justify-center gap-3">
+          <a href="tel:+48733590940" class="inline-flex justify-center items-center gap-2 bg-gold text-black font-semibold px-7 py-4 rounded-full hover:bg-concrete transition-colors"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 733 590 940</a>
+          <a href="#kontakt" class="inline-flex justify-center items-center gap-2 border border-white/25 text-concrete font-semibold px-7 py-4 rounded-full hover:border-gold hover:text-gold transition-colors">Wyślij zapytanie <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt" class="py-24 sm:py-32 px-5 sm:px-8 border-t border-white/10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 lg:gap-16">
+      <div class="reveal">
+        <h2 class="font-heading font-black uppercase text-4xl sm:text-5xl tracking-[-0.02em]">Kontakt</h2>
+        <p class="text-concrete/60 mt-5 leading-relaxed max-w-md">Opisz maszynę i problem albo detal, który chcesz zaprojektować i wykonać — odpowiemy i ustalimy kolejne kroki.</p>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+          <a href="tel:+48733590940" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-industrial-slate p-5 hover:border-gold/50 transition-colors">
+            <span class="w-11 h-11 rounded-full bg-gold/10 text-gold grid place-items-center shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <span><span class="block text-concrete/50 text-xs">Telefon</span><span class="font-heading font-bold text-lg group-hover:text-gold transition-colors">733 590 940</span></span>
+          </a>
+          <a href="mailto:kontakt@promatyk.pl" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-industrial-slate p-5 hover:border-gold/50 transition-colors">
+            <span class="w-11 h-11 rounded-full bg-gold/10 text-gold grid place-items-center shrink-0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+            <span><span class="block text-concrete/50 text-xs">E-mail</span><span class="font-semibold group-hover:text-gold transition-colors">kontakt@promatyk.pl</span></span>
+          </a>
+          <div class="flex items-center gap-4 rounded-2xl border border-white/10 bg-industrial-slate p-5">
+            <span class="w-11 h-11 rounded-full bg-gold/10 text-gold grid place-items-center shrink-0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <span><span class="block text-concrete/50 text-xs">Adres</span><span class="text-sm">ul. Józefa Sułkowskiego 54/2, 85-634 Bydgoszcz</span></span>
           </div>
-          <div>
-            <p class="text-gold text-[10px] font-body uppercase tracking-wider mb-1">E-mail</p>
-            <a href="mailto:kontakt@promatyk.pl" class="text-concrete font-body text-sm hover:text-gold transition-colors">kontakt@promatyk.pl</a>
-          </div>
-          <div>
-            <p class="text-gold text-[10px] font-body uppercase tracking-wider mb-1">Adres</p>
-            <p class="text-concrete font-body text-sm">ul. Józefa Sułkowskiego 54/2<br>85-634 Bydgoszcz</p>
-          </div>
-          <div>
-            <p class="text-gold text-[10px] font-body uppercase tracking-wider mb-1">Dane firmy</p>
-            <p class="text-concrete font-body text-sm">PROMATYK Kamil Szajner<br>NIP: 9671461402</p>
+          <div class="flex items-center gap-4 rounded-2xl border border-white/10 bg-industrial-slate p-5">
+            <span class="w-11 h-11 rounded-full bg-gold/10 text-gold grid place-items-center shrink-0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></span>
+            <span><span class="block text-concrete/50 text-xs">Dane firmy</span><span class="text-sm">PROMATYK Kamil Szajner, NIP: 9671461402</span></span>
           </div>
         </div>
       </div>
 
-      <form id="contact-form" class="bg-industrial-slate p-8 sm:p-10 reveal relative">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label class="text-concrete/50 font-body text-xs uppercase tracking-wider">Imię i nazwisko *</label>
-            <input required name="Imię i nazwisko" type="text" autocomplete="name" placeholder="Jan Kowalski" class="w-full bg-transparent border-b border-gold/40 focus:border-gold outline-none text-concrete font-body text-sm py-3 mt-1 transition-colors placeholder:text-concrete/30">
-          </div>
-          <div>
-            <label class="text-concrete/50 font-body text-xs uppercase tracking-wider">Firma</label>
-            <input name="Firma" type="text" autocomplete="organization" placeholder="Nazwa firmy" class="w-full bg-transparent border-b border-gold/40 focus:border-gold outline-none text-concrete font-body text-sm py-3 mt-1 transition-colors placeholder:text-concrete/30">
-          </div>
-          <div>
-            <label class="text-concrete/50 font-body text-xs uppercase tracking-wider">E-mail *</label>
-            <input required name="email" type="email" autocomplete="email" placeholder="jan@firma.pl" class="w-full bg-transparent border-b border-gold/40 focus:border-gold outline-none text-concrete font-body text-sm py-3 mt-1 transition-colors placeholder:text-concrete/30">
-          </div>
-          <div>
-            <label class="text-concrete/50 font-body text-xs uppercase tracking-wider">Telefon</label>
-            <input name="Telefon" type="tel" autocomplete="tel" placeholder="600 100 200" class="w-full bg-transparent border-b border-gold/40 focus:border-gold outline-none text-concrete font-body text-sm py-3 mt-1 transition-colors placeholder:text-concrete/30">
-          </div>
+      <form id="contact-form" class="rounded-3xl border border-white/10 bg-industrial-slate p-6 sm:p-10 reveal relative" novalidate>
+        <h3 class="font-heading font-bold uppercase text-xl mb-1">Wyślij zapytanie</h3>
+        <p class="text-concrete/50 text-sm mb-8">Pola oznaczone * są wymagane.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          <label class="block"><span class="text-concrete/70 text-sm">Imię i nazwisko *</span>
+            <input required name="Imię i nazwisko" type="text" autocomplete="name" placeholder="Jan Kowalski" class="mt-2 w-full rounded-xl bg-obsidian border border-white/10 focus:border-gold outline-none px-4 py-3 text-concrete placeholder:text-concrete/30 transition-colors"></label>
+          <label class="block"><span class="text-concrete/70 text-sm">Firma</span>
+            <input name="Firma" type="text" autocomplete="organization" placeholder="Nazwa firmy" class="mt-2 w-full rounded-xl bg-obsidian border border-white/10 focus:border-gold outline-none px-4 py-3 text-concrete placeholder:text-concrete/30 transition-colors"></label>
+          <label class="block"><span class="text-concrete/70 text-sm">E-mail *</span>
+            <input required name="email" type="email" autocomplete="email" placeholder="jan@firma.pl" class="mt-2 w-full rounded-xl bg-obsidian border border-white/10 focus:border-gold outline-none px-4 py-3 text-concrete placeholder:text-concrete/30 transition-colors"></label>
+          <label class="block"><span class="text-concrete/70 text-sm">Telefon</span>
+            <input name="Telefon" type="tel" autocomplete="tel" placeholder="600 100 200" class="mt-2 w-full rounded-xl bg-obsidian border border-white/10 focus:border-gold outline-none px-4 py-3 text-concrete placeholder:text-concrete/30 transition-colors"></label>
         </div>
-        <label class="text-concrete/50 font-body text-xs uppercase tracking-wider">Wiadomość *</label>
-        <textarea id="contact-message" name="Wiadomość" required rows="4" placeholder="Marka i model maszyny, objawy, lokalizacja zakładu..." class="w-full bg-transparent border-b border-gold/40 focus:border-gold outline-none text-concrete font-body text-sm py-3 mt-1 mb-6 resize-none transition-colors placeholder:text-concrete/30"></textarea>
-
+        <label class="block mb-6"><span class="text-concrete/70 text-sm">Wiadomość *</span>
+          <textarea id="contact-message" name="Wiadomość" required rows="5" placeholder="Marka i model maszyny, objawy, lokalizacja zakładu..." class="mt-2 w-full rounded-xl bg-obsidian border border-white/10 focus:border-gold outline-none px-4 py-3 text-concrete placeholder:text-concrete/30 resize-y transition-colors"></textarea></label>
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-        <button id="contact-submit" type="submit" class="w-full bg-gold text-obsidian font-heading font-bold uppercase text-sm py-4 hover:bg-concrete transition-colors">
-          Wyślij zapytanie
-        </button>
+        <button id="contact-submit" type="submit" class="w-full bg-gold text-black font-semibold py-4 rounded-full hover:bg-concrete transition-colors">Wyślij zapytanie</button>
       </form>
     </div>
   </section>
+  </main>
 
-  <footer class="bg-obsidian py-8 text-center text-xs text-concrete/40 border-t border-white/10">
-    © 2026 PROMATYK Kamil Szajner. Wszelkie prawa zastrzeżone.
+  <!-- STOPKA -->
+  <footer class="border-t border-white/10 bg-industrial-slate px-5 sm:px-8 pt-16 pb-28 lg:pb-10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div>
+        <img src="img/promatyk_logo.png" alt="PROMATYK" class="w-28 h-auto">
+        <p class="text-concrete/50 text-sm mt-5 leading-relaxed">Serwis wtryskarek i robotów przemysłowych. Bydgoszcz i cała Polska.</p>
+      </div>
+      <div>
+        <h3 class="font-heading font-bold uppercase text-sm mb-4">Nawigacja</h3>
+        <ul class="space-y-2.5 text-sm text-concrete/60">
+          <li><a href="#uslugi" class="hover:text-gold transition-colors">Usługi</a></li>
+          <li><a href="#dlaczego" class="hover:text-gold transition-colors">Dlaczego my</a></li>
+          <li><a href="#galeria" class="hover:text-gold transition-colors">Realizacje</a></li>
+          <li><a href="#druk3d" class="hover:text-gold transition-colors">Druk 3D i CNC</a></li>
+          <li><a href="#proces" class="hover:text-gold transition-colors">Proces</a></li>
+          <li><a href="#kontakt" class="hover:text-gold transition-colors">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-heading font-bold uppercase text-sm mb-4">Usługi</h3>
+        <ul class="space-y-2.5 text-sm text-concrete/60">
+          <li><a href="#uslugi" class="hover:text-gold transition-colors">Diagnostyka i naprawa</a></li>
+          <li><a href="#uslugi" class="hover:text-gold transition-colors">R&amp;D i EOAT</a></li>
+          <li><a href="#uslugi" class="hover:text-gold transition-colors">Suszarki i sita</a></li>
+          <li><a href="#uslugi" class="hover:text-gold transition-colors">CAD, druk 3D i CNC</a></li>
+          <li><a href="#uslugi" class="hover:text-gold transition-colors">Relokacja i uruchamianie</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-heading font-bold uppercase text-sm mb-4">Kontakt</h3>
+        <ul class="space-y-2.5 text-sm text-concrete/60">
+          <li><a href="tel:+48733590940" class="hover:text-gold transition-colors">733 590 940</a></li>
+          <li><a href="mailto:kontakt@promatyk.pl" class="hover:text-gold transition-colors">kontakt@promatyk.pl</a></li>
+          <li>ul. Józefa Sułkowskiego 54/2<br>85-634 Bydgoszcz</li>
+          <li>NIP: 9671461402</li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-xs text-concrete/40">© 2026 PROMATYK Kamil Szajner. Wszelkie prawa zastrzeżone.</div>
   </footer>
 
-  <!-- SCRIPT JAVASCRIPT: Dynamiczna Logika Strony -->
+  <!-- Pasek szybkiego kontaktu (telefon) -->
+  <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 p-3 bg-obsidian/90 backdrop-blur-xl border-t border-white/10 grid grid-cols-2 gap-2">
+    <a href="tel:+48733590940" class="inline-flex justify-center items-center gap-2 bg-gold text-black font-semibold py-3 rounded-full text-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Zadzwoń</a>
+    <a href="#kontakt" class="inline-flex justify-center items-center gap-2 border border-white/20 text-concrete font-semibold py-3 rounded-full text-sm">Zapytanie</a>
+  </div>
+
+  <!-- OKNO REALIZACJI -->
+  <div id="case-modal" class="fixed inset-0 z-[100] opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-labelledby="cm-title" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/85 backdrop-blur-sm" data-close></div>
+    <div class="panel relative h-full sm:h-auto sm:max-h-[92vh] sm:mt-[4vh] max-w-6xl mx-auto bg-industrial-slate sm:rounded-3xl border border-white/10 overflow-hidden flex flex-col lg:flex-row">
+      <button type="button" data-close class="absolute top-3 right-3 z-20 w-11 h-11 rounded-full bg-obsidian/80 border border-white/15 grid place-items-center text-concrete hover:text-gold" aria-label="Zamknij">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="lg:w-[58%] bg-black flex flex-col shrink-0">
+        <div id="cm-stage" class="relative w-full aspect-[4/3] lg:aspect-auto lg:flex-1 lg:min-h-[480px] select-none"></div>
+        <div class="flex items-center gap-3 px-3 py-3 border-t border-white/10">
+          <button type="button" id="cm-prev" class="w-10 h-10 shrink-0 rounded-full border border-white/15 grid place-items-center hover:border-gold hover:text-gold" aria-label="Poprzednie zdjęcie">‹</button>
+          <div id="cm-thumbs" class="flex gap-2 overflow-x-auto no-scrollbar flex-1"></div>
+          <button type="button" id="cm-next" class="w-10 h-10 shrink-0 rounded-full border border-white/15 grid place-items-center hover:border-gold hover:text-gold" aria-label="Następne zdjęcie">›</button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto p-6 sm:p-8 lg:p-10">
+        <div class="flex flex-wrap items-center gap-2 mb-4 pr-12">
+          <span id="cm-tag" class="text-[11px] font-semibold uppercase tracking-wider text-gold border border-gold/40 rounded-full px-2.5 py-1"></span>
+          <span id="cm-count" class="text-xs text-concrete/50"></span>
+        </div>
+        <h3 id="cm-title" class="font-heading font-black uppercase text-2xl sm:text-3xl leading-tight"></h3>
+        <p id="cm-label" class="text-gold text-sm mt-3"></p>
+        <div id="cm-body" class="mt-6 space-y-5"></div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+          <a href="tel:+48733590940" class="inline-flex justify-center items-center gap-2 bg-gold text-black font-semibold px-6 py-3 rounded-full text-sm hover:bg-concrete transition-colors"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Masz podobny problem? Zadzwoń</a>
+          <a href="#kontakt" data-close class="inline-flex justify-center items-center border border-white/20 font-semibold px-6 py-3 rounded-full text-sm hover:border-gold hover:text-gold transition-colors">Wyślij zapytanie</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    window.CASES = [{"id": "engel-zwarcie", "title": "Uszczelnienia siłownika zwarcia – Engel bezkolumnowy", "tag": "Wtryskarki", "media": [{"type": "img", "src": "img/realizacje/r10_engel_1.jpg", "thumb": "img/thumbs/r10_engel_1.jpg", "label": "Siłownik zwarcia po demontażu"}, {"type": "img", "src": "img/realizacje/r10_engel_2.jpg", "thumb": "img/thumbs/r10_engel_2.jpg", "label": "Ciało obce: uszkodzona śruba"}, {"type": "img", "src": "img/realizacje/r10_engel_3.jpg", "thumb": "img/thumbs/r10_engel_3.jpg", "label": "Rysy na powierzchni roboczej"}, {"type": "img", "src": "img/realizacje/r10_engel_4.jpg", "thumb": "img/thumbs/r10_engel_4.jpg", "label": "Gniazda uszczelnień – zbliżenie"}], "paras": [["Zakres naprawy", "Wymiana uszczelnień siłownika zwarcia na bezkolumnowej wtryskarce Engel. Siłownik zwarcia wytwarza siłę, która utrzymuje formę zamkniętą podczas wtrysku. Po otwarciu cylindra znaleźliśmy w jego wnętrzu starą, zdeformowaną śrubę – ciało obce, które przemieszczało się w siłowniku i rysowało jego powierzchnie robocze. Usunęliśmy je, oczyściliśmy cylinder, oceniliśmy stan powierzchni i zamontowaliśmy nowe uszczelnienia."], ["Dlaczego to było groźne", "Metalowy element pracujący pod wysokim ciśnieniem między tłokiem a cylindrem pogłębia rysy przy każdym cyklu i niszczy nowe uszczelnienia. Prowadzi to do przecieków wewnętrznych i spadku siły zwarcia – a ta oznacza wypływki na wypraskach i ryzyko uszkodzenia formy. W skrajnym przypadku ciało obce mogło zakleszczyć się między tłokiem a cylindrem, co grozi trwałym zniszczeniem siłownika, kosztowną regeneracją lub wymianą całego zespołu i wielotygodniowym przestojem."]], "highlight": ["Szukamy przyczyny, nie tylko objawu.", "Sama wymiana uszczelnień bez znalezienia śruby skończyłaby się ich ponownym zniszczeniem w krótkim czasie."]}, {"id": "can-zasilanie", "title": "Diagnostyka magistrali CAN i zasilania 24 V", "tag": "Elektronika i diagnostyka", "media": [{"type": "img", "src": "img/realizacje/r05_can_1.jpg", "thumb": "img/thumbs/r05_can_1.jpg", "label": "Magistrala CAN – przed naprawą"}, {"type": "img", "src": "img/realizacje/r05_can_2.jpg", "thumb": "img/thumbs/r05_can_2.jpg", "label": "Magistrala CAN – po naprawie"}, {"type": "img", "src": "img/realizacje/r05_psu_1.jpg", "thumb": "img/thumbs/r05_psu_1.jpg", "label": "Zasilacz 24 V – uszkodzony"}, {"type": "img", "src": "img/realizacje/r05_psu_2.jpg", "thumb": "img/thumbs/r05_psu_2.jpg", "label": "Zasilacz 24 V – sprawny"}, {"type": "img", "src": "img/realizacje/r05_psu_3.jpg", "thumb": "img/thumbs/r05_psu_3.jpg", "label": "Zasilacz laboratoryjny – odniesienie"}], "paras": [["Magistrala CAN", "CAN to sieć, przez którą sterownik maszyny komunikuje się z napędami, modułami we/wy i robotem. Pomiar oscyloskopem przed naprawą pokazał silne oscylacje i zniekształcone zbocza sygnałów CAN_H i CAN_L – typowy objaw problemów z impedancją linii, terminacją lub połączeniami. Taki sygnał powoduje błędy transmisji, ramki błędów, a w skrajnym przypadku odłączenie węzła od magistrali i sporadyczne, trudne do wyjaśnienia zatrzymania maszyny. Po naprawie zbocza są czyste, a poziomy sygnałów stabilne."], ["Zasilanie 24 V", "Uszkodzony zasilacz miał na wyjściu tętnienia o amplitudzie ok. 2 V (24,65–26,67 V), podczas gdy multimetr pokazywał poprawne 25,46 V – uśrednia on napięcie i takiej usterki po prostu nie widzi. Porównanie ze sprawnym zasilaczem i zasilaczem laboratoryjnym jednoznacznie potwierdziło przyczynę. Niestabilne 24 V zasilające sterownik, czujniki i zawory prowadzi do losowych resetów, fałszywych sygnałów i błędów komunikacji."]], "highlight": ["Mobilny oscyloskop na hali.", "Pomiary wykonujemy przenośnym oscyloskopem bezpośrednio przy maszynie, w trakcie jej pracy – bez demontażu podzespołów i wożenia ich do warsztatu. W serwisach maszyn tego typu sprzęt to wciąż rzadkość, a pozwala znaleźć usterki niewidoczne dla multimetru i usunąć przyczynę, zamiast wymieniać części na próbę."]}, {"id": "wemo-os-x", "title": "Wymiana pękniętego profilu osi X – robot Wemo", "tag": "Roboty", "media": [{"type": "img", "src": "img/realizacje/r07_wemo_1.jpg", "thumb": "img/thumbs/r07_wemo_1.jpg", "label": "Robot Wemo na wtryskarce"}, {"type": "img", "src": "img/realizacje/r07_wemo_2.jpg", "thumb": "img/thumbs/r07_wemo_2.jpg", "label": "Demontaż osi X"}, {"type": "img", "src": "img/realizacje/r07_wemo_3.jpg", "thumb": "img/thumbs/r07_wemo_3.jpg", "label": "Pęknięty profil osi X"}, {"type": "img", "src": "img/realizacje/r07_wemo_4.jpg", "thumb": "img/thumbs/r07_wemo_4.jpg", "label": "Stary i nowy profil osi X"}, {"type": "video", "src": "img/realizacje/r07_wemo_film.mp4", "poster": "img/realizacje/r07_wemo_poster.jpg", "thumb": "img/thumbs/r07_wemo_poster.jpg", "label": "Po naprawie – test pracy robota"}], "paras": [["Diagnoza", "W robocie Wemo serii Design X stwierdziliśmy pęknięcie aluminiowego profilu nośnego osi X. To usterka krytyczna: pod wpływem cyklicznych obciążeń dynamicznych pęknięcie postępuje, obniżając sztywność osi i dokładność pozycjonowania, a w skrajnym przypadku grozi oderwaniem osi wraz z chwytakiem nad otwartą formą."], ["Naprawa", "Zdemontowaliśmy oś X, przenieśliśmy osprzęt na nowy profil, zmontowaliśmy całość i ponownie uruchomiliśmy robota. Poprawność pracy potwierdziliśmy testem w cyklu – nagranie z testu znajduje się w galerii."]], "highlight": ["Czas realizacji: ok. 6 roboczogodzin.", "Robot wrócił do produkcji tego samego dnia."]}, {"id": "km-poduszka", "title": "Naprawa poduszki zwarciowej – KraussMaffei 2700", "tag": "Wtryskarki", "media": [{"type": "img", "src": "img/realizacje/r08_km_1.jpg", "thumb": "img/thumbs/r08_km_1.jpg", "label": "Demontaż zespołu suwnicą"}, {"type": "img", "src": "img/realizacje/r08_km_2.jpg", "thumb": "img/thumbs/r08_km_2.jpg", "label": "Poduszka zwarciowa"}, {"type": "img", "src": "img/realizacje/r08_km_3.jpg", "thumb": "img/thumbs/r08_km_3.jpg", "label": "Zespół po demontażu"}], "paras": [["Zakres naprawy", "Naprawa poduszki zwarciowej na wtryskarce KraussMaffei 2700 – zespołu układu zamykania, który rygluje kolumnę i przenosi pełną siłę zwarcia podczas wtrysku. Usterka w tym miejscu oznacza całkowite zatrzymanie maszyny. Prace objęły demontaż ciężkiego zespołu z użyciem suwnicy, naprawę oraz ponowny montaż i uruchomienie wtryskarki."]], "highlight": ["Interwencja priorytetowa w sobotę", "– maszyna wróciła do pracy bez utraty kolejnych dni produkcyjnych."]}, {"id": "sepro-os-z", "title": "Wymiana paska i rolki osi Z – robot Sepro", "tag": "Roboty", "media": [{"type": "img", "src": "img/realizacje/r06_sepro_1.jpg", "thumb": "img/thumbs/r06_sepro_1.jpg", "label": "Uszkodzony pasek osi Z"}, {"type": "img", "src": "img/realizacje/r06_sepro_2.jpg", "thumb": "img/thumbs/r06_sepro_2.jpg", "label": "Uszkodzona rolka – zniszczone łożysko"}, {"type": "img", "src": "img/realizacje/r06_sepro_3.jpg", "thumb": "img/thumbs/r06_sepro_3.jpg", "label": "Oś Z robota Sepro"}], "paras": [["Zakres naprawy", "W robocie Sepro uszkodzeniu uległ pasek zębaty osi Z – zniszczone zęby i wystające linki nośne – oraz rolka, w której rozpadło się łożysko. Wymieniliśmy pasek, a nową rolkę wykonaliśmy na miejscu na tokarce CNC. Dzięki temu robot wrócił do pracy jeszcze tego samego dnia. Oczekiwanie na część od producenta oznaczałoby co najmniej kilka dni roboczych przestoju maszyny."], ["Naciąg pasa", "Naciąg ustawiamy i weryfikujemy profesjonalnym miernikiem Optibelt, który wyznacza go na podstawie częstotliwości drgań własnych pasa. W osi pionowej to parametr krytyczny: zbyt słaby naciąg grozi przeskokiem zębów, utratą pozycji i kolizją chwytaka z formą, a zbyt mocny przeciąża łożyska rolek i przyspiesza zużycie pasa. Pomiar przyrządem zamiast „na wyczucie” daje powtarzalny wynik zgodny z wytycznymi."]], "highlight": ["Własna obróbka CNC = krótszy przestój.", "Gdy brakuje części, wykonujemy ją sami – zamiast zatrzymywać produkcję w oczekiwaniu na dostawę."]}, {"id": "engel-szybki-ruch", "title": "Uszczelnienia siłownika szybkiego ruchu – Engel", "tag": "Wtryskarki", "media": [{"type": "img", "src": "img/realizacje/r09_engel_1.jpg", "thumb": "img/thumbs/r09_engel_1.jpg", "label": "Demontaż siłownika"}, {"type": "img", "src": "img/realizacje/r09_engel_2.jpg", "thumb": "img/thumbs/r09_engel_2.jpg", "label": "Narzędzie do montażu uszczelnień"}, {"type": "img", "src": "img/realizacje/r09_engel_3.jpg", "thumb": "img/thumbs/r09_engel_3.jpg", "label": "Tłok z nowymi uszczelnieniami"}, {"type": "img", "src": "img/realizacje/r09_engel_4.jpg", "thumb": "img/thumbs/r09_engel_4.jpg", "label": "Montaż siłownika"}], "paras": [["Zakres naprawy", "Wymiana uszczelnień siłownika szybkiego ruchu na wtryskarce Engel. Siłownik odpowiada za szybkie zamykanie i otwieranie formy – zużyte uszczelnienia powodują przecieki wewnętrzne, spadek prędkości i niestabilny ruch płyty, a w efekcie wydłużenie cyklu i wycieki oleju. Po demontażu i oczyszczeniu elementów zamontowaliśmy nowe uszczelnienia, a siłownik złożyliśmy i sprawdziliśmy na maszynie."]], "highlight": ["Dedykowane narzędzia montażowe", "– uszczelnienia zakładamy bez ryzyka naciągnięcia i uszkodzenia krawędzi uszczelniających, co przekłada się na ich trwałość."]}, {"id": "arburg", "title": "Wymiana uszczelnień wtryskarki Arburg", "tag": "Wtryskarki", "media": [{"type": "img", "src": "img/realizacje/r04_arburg_1.jpg", "thumb": "img/thumbs/r04_arburg_1.jpg", "label": "Jednostka wtrysku Arburg"}, {"type": "img", "src": "img/realizacje/r04_arburg_2.jpg", "thumb": "img/thumbs/r04_arburg_2.jpg", "label": "Cylinder jednostki wtrysku"}, {"type": "img", "src": "img/realizacje/r04_arburg_3.jpg", "thumb": "img/thumbs/r04_arburg_3.jpg", "label": "Element z nowymi uszczelnieniami"}, {"type": "img", "src": "img/realizacje/r04_arburg_4.jpg", "thumb": "img/thumbs/r04_arburg_4.jpg", "label": "Tłoczyska z nowymi uszczelnieniami"}, {"type": "img", "src": "img/realizacje/r04_arburg_5.jpg", "thumb": "img/thumbs/r04_arburg_5.jpg", "label": "Rozebrany element wtryskarki"}], "paras": [["Zakres naprawy", "Wymieniliśmy uszczelnienia jednostki zamykania oraz jednostki wtrysku na wtryskarce Arburg u producenta odblasków dla przemysłu samochodowego. Zużyte uszczelnienia prowadzą do wycieków oleju, spadków ciśnienia i niestabilności parametrów procesu. Wymiana przywraca szczelność układu hydraulicznego oraz powtarzalność cyklu wtrysku."]], "highlight": null}, {"id": "motan-sita", "title": "Wymiana sit molekularnych w 5 suszarkach Motan", "tag": "Urządzenia peryferyjne", "media": [{"type": "img", "src": "img/realizacje/r02_motan_1.jpg", "thumb": "img/thumbs/r02_motan_1.jpg", "label": "Sito molekularne"}, {"type": "img", "src": "img/realizacje/r02_motan_2.jpg", "thumb": "img/thumbs/r02_motan_2.jpg", "label": "Pomiar punktu rosy"}, {"type": "img", "src": "img/realizacje/r02_motan_3.jpg", "thumb": "img/thumbs/r02_motan_3.jpg", "label": "Pomiar punktu rosy"}], "paras": [["Zakres prac", "Wymieniliśmy sita molekularne w 5 suszarkach Motan u czołowego producenta wyrobów z tworzyw sztucznych z województwa kujawsko-pomorskiego – łącznie blisko 500 kg złoża. Zużyte sito traci zdolność adsorpcji wilgoci, przez co suszarka nie osiąga wymaganego punktu rosy, a niedosuszony granulat powoduje wady wyprasek. Skuteczność wymiany potwierdziliśmy pomiarem punktu rosy."]], "highlight": null}, {"id": "obrotnica", "title": "Naprawa obrotnicy form wtryskowych", "tag": "Urządzenia peryferyjne", "media": [{"type": "img", "src": "img/realizacje/r03_obrotnica_1.jpg", "thumb": "img/thumbs/r03_obrotnica_1.jpg", "label": "Obrotnica form wtryskowych"}], "paras": [["Zakres naprawy", "Przeprowadziliśmy diagnostykę i naprawę obrotnicy form wtryskowych u podwykonawcy branży motoryzacyjnej, dostarczającego komponenty m.in. dla Grupy Volkswagen, Tesli i Toyoty. Sprawna obrotnica umożliwia bezpieczne obracanie ciężkich form podczas ich serwisu i przezbrojeń – w produkcji dla automotive przekłada się to bezpośrednio na ciągłość dostaw."]], "highlight": null}, {"id": "uchwyty-eoat", "title": "Uchwyty na chwytaki robotów", "tag": "CAD i druk 3D", "media": [{"type": "img", "src": "img/realizacje/r01_uchwyty_1.jpg", "thumb": "img/thumbs/r01_uchwyty_1.jpg", "label": "Uchwyty w chwytakowni klienta"}, {"type": "img", "src": "img/realizacje/r01_uchwyty_2.jpg", "thumb": "img/thumbs/r01_uchwyty_2.jpg", "label": "Model CAD uchwytu"}], "paras": [["Zakres prac", "Zaprojektowaliśmy w CAD dedykowane uchwyty do przechowywania chwytaków (EOAT) robotów przemysłowych, dopasowane do geometrii narzędzi i układu chwytakowni klienta. Wykonanie detali w technologii druku 3D pozwoliło spełnić wszystkie wymagania przy zachowaniu optymalnego kosztu produkcji. Uporządkowane stanowisko skraca czas przezbrojeń i ogranicza ryzyko uszkodzenia chwytaków."]], "highlight": null}];
+  </script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pad = n => String(n).padStart(2, '0');
 
-      // 1. Dynamiczny Pasek Postępu Scrolla
-      const progressBar = document.getElementById('scroll-progress');
-      window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        if(progressBar) progressBar.style.height = scrolled + "%";
-      });
-
-      // 2. Aktywne linki w Nawigacji podczas Przewijania (ScrollSpy)
-      const sections = document.querySelectorAll('section');
-      const navItems = document.querySelectorAll('.nav-item');
-
-      window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
-            current = section.getAttribute('id');
-          }
-        });
-
-        navItems.forEach(item => {
-          item.classList.remove('text-gold', 'font-bold');
-          if (item.getAttribute('href') === `#${current}`) {
-            item.classList.add('text-gold', 'font-bold');
-          }
-        });
-      });
-
-      // 3. Efekt Animacji Pojawiania się Elementów (Reveal on Scroll)
-      const reveals = document.querySelectorAll('.reveal');
-      const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        reveals.forEach(el => {
-          const elementTop = el.getBoundingClientRect().top;
-          if (elementTop < windowHeight - 100) {
-            el.classList.add('active');
-          }
-        });
-      };
-      window.addEventListener('scroll', revealOnScroll);
-      revealOnScroll();
-
-      // 4. Galeria realizacji: slidery + Lightbox
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
-      const lightboxCaption = document.getElementById('lightbox-caption');
-      const lightboxCount = document.getElementById('lightbox-count');
-      const lightboxClose = document.getElementById('lightbox-close');
-      const lbPrev = document.getElementById('lightbox-prev');
-      const lbNext = document.getElementById('lightbox-next');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let lbSet = [], lbIndex = 0, lbTitle = '';
-
-      const pad = n => String(n).padStart(2, '0');
-      const showLb = () => {
-        const im = lbSet[lbIndex];
-        const lbVid = document.getElementById('lightbox-video');
-        if (im.tagName === 'VIDEO') {
-          lightboxImg.style.display = 'none';
-          lbVid.style.display = 'block';
-          if (lbVid.src !== im.src) lbVid.src = im.src;
-          lbVid.currentTime = 0; lbVid.play().catch(() => {});
-        } else {
-          lbVid.pause(); lbVid.style.display = 'none';
-          lightboxImg.style.display = '';
-          lightboxImg.style.opacity = 0;
-          setTimeout(() => { lightboxImg.src = im.src; lightboxImg.alt = im.alt; lightboxImg.style.opacity = 1; }, 120);
-        }
-        lightboxCaption.innerText = im.dataset.label ? lbTitle + ' — ' + im.dataset.label : lbTitle;
-        lightboxCount.innerText = lbSet.length > 1 ? pad(lbIndex + 1) + ' / ' + pad(lbSet.length) : '';
-        lbPrev.style.display = lbNext.style.display = lbSet.length > 1 ? '' : 'none';
-      };
-      const openLb = (imgs, i, title) => {
-        lbSet = imgs; lbIndex = i; lbTitle = title; showLb();
-        lightbox.classList.remove('hidden'); lightbox.classList.add('flex');
-        document.querySelectorAll('.slider').forEach(s => s.classList.add('paused'));
-      };
-      const closeLb = () => {
-        lightbox.classList.add('hidden'); lightbox.classList.remove('flex');
-        document.getElementById('lightbox-video').pause();
-        document.querySelectorAll('.slider').forEach(s => s.classList.remove('paused'));
-      };
-      const stepLb = d => { lbIndex = (lbIndex + d + lbSet.length) % lbSet.length; showLb(); };
-      lbPrev.addEventListener('click', e => { e.stopPropagation(); stepLb(-1); });
-      lbNext.addEventListener('click', e => { e.stopPropagation(); stepLb(1); });
-      if (lightboxClose) lightboxClose.addEventListener('click', closeLb);
-      lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLb(); });
-      document.addEventListener('keydown', e => {
-        if (lightbox.classList.contains('hidden')) return;
-        if (e.key === 'Escape') closeLb();
-        if (e.key === 'ArrowLeft') stepLb(-1);
-        if (e.key === 'ArrowRight') stepLb(1);
-      });
-      let lbX = null;
-      lightbox.addEventListener('touchstart', e => { lbX = e.touches[0].clientX; }, { passive: true });
-      lightbox.addEventListener('touchend', e => {
-        if (lbX === null) return; const dx = e.changedTouches[0].clientX - lbX; lbX = null;
-        if (Math.abs(dx) > 50) stepLb(dx < 0 ? 1 : -1);
-      });
-
-      document.querySelectorAll('.slider').forEach((slider, idx) => {
-        slider.style.setProperty('--dur', (4.5 + (idx % 3) * 0.7) + 's');
-        const slides = [...slider.querySelectorAll('.slide')];
-        const title = slider.dataset.title;
-        let i = 0;
-        let swiped = false;
-        slider.addEventListener('click', e => {
-          if (e.target.closest('button') || swiped) return;
-          openLb(slides, i, title);
-        });
-        if (slides.length < 2) return;
-
-        const segs = [...slider.querySelectorAll('.seg')];
-        const dots = [...slider.querySelectorAll('.dot')];
-        const counter = slider.querySelector('.counter');
-        let visible = false;
-
-        const go = n => {
-          i = (n + slides.length) % slides.length;
-          slides.forEach((s, k) => s.classList.toggle('is-active', k === i));
-          dots.forEach((d, k) => d.classList.toggle('on', k === i));
-          segs.forEach((s, k) => {
-            s.classList.remove('run');
-            s.classList.toggle('done', k < i);
-          });
-          if (counter) counter.innerText = pad(i + 1) + ' / ' + pad(slides.length);
-          const lbl = slider.querySelector('.slide-label');
-          if (lbl) lbl.innerText = slides[i].dataset.label || '';
-          slides.forEach((s, k) => {
-            if (s.tagName !== 'VIDEO') return;
-            if (k === i && visible) { s.currentTime = 0; s.play().catch(() => {}); } else { s.pause(); }
-          });
-          if (slides[i].dataset.dur) segs[i].style.setProperty('--dur', slides[i].dataset.dur);
-          if (!reduceMotion && visible) {
-            void segs[i].offsetWidth;  // restart animacji paska
-            segs[i].classList.add('run');
-          }
-        };
-        segs.forEach(s => s.querySelector('i').addEventListener('animationend', () => go(i + 1)));
-        slider.querySelector('.prev').addEventListener('click', () => go(i - 1));
-        slider.querySelector('.next').addEventListener('click', () => go(i + 1));
-        dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
-
-        let x0 = null;
-        slider.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; swiped = false; }, { passive: true });
-        slider.addEventListener('touchend', e => {
-          if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
-          if (Math.abs(dx) > 40) { swiped = true; go(dx < 0 ? i + 1 : i - 1); setTimeout(() => swiped = false, 350); }
-        });
-
-        // autoodtwarzanie tylko gdy slider jest widoczny na ekranie
-        const io = new IntersectionObserver(entries => {
-          entries.forEach(en => {
-            const was = visible; visible = en.isIntersecting;
-            if (visible && !was) go(i);
-            if (!visible) segs.forEach(s => s.classList.remove('run'));
-          });
-        }, { threshold: 0.4 });
-        io.observe(slider);
-        go(0);
-      });
-
-      // 5. Formularz Kontaktowy -> e-mail na kontakt@promatyk.pl (Web3Forms) i Toast
-      // ▼▼▼ TUTAJ WKLEJ SWÓJ KLUCZ (Access Key) Z web3forms.com ▼▼▼
-      const WEB3FORMS_KEY = 'c3cd8691-92b2-44ff-8afb-904d228bed90';
-      // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-
-      const form = document.getElementById('contact-form');
-      const toast = document.getElementById('toast');
-      const submitBtn = document.getElementById('contact-submit');
-      let toastTimer;
-      const showToast = (ok, title, text) => {
-        document.getElementById('toast-icon').innerText = ok ? '✓' : '!';
-        document.getElementById('toast-title').innerText = title;
-        document.getElementById('toast-text').innerText = text;
-        toast.classList.remove('translate-x-full');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.add('translate-x-full'), ok ? 5000 : 9000);
-      };
-      const FAIL_TEXT = 'Spróbuj ponownie lub zadzwoń: 733 590 940 / napisz: kontakt@promatyk.pl';
-
-      // Wysyłka standardowa (bez fetch) – zapasowa, gdy zapytanie JavaScript zostanie zablokowane
-      const nativeSubmit = (data) => {
-        const f = document.createElement('form');
-        f.method = 'POST';
-        f.action = 'https://api.web3forms.com/submit';
-        f.style.display = 'none';
-        const back = location.href.split('#')[0].split('?')[0] + '?wyslano=1#kontakt';
-        Object.entries(Object.assign({}, data, { redirect: back })).forEach(([k, v]) => {
-          const i = document.createElement('input');
-          i.type = 'hidden'; i.name = k; i.value = v;
-          f.appendChild(i);
-        });
-        document.body.appendChild(f);
-        f.submit();
-      };
-      if (/[?&]wyslano=1/.test(location.search)) {
-        showToast(true, 'Wiadomość wysłana!', 'Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.');
-        history.replaceState(null, '', location.pathname + '#kontakt');
-      }
-
-      if (form) {
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          if (!form.reportValidity()) return;
-          const fd = new FormData(form);
-          if (fd.get('_honey')) return; // zabezpieczenie przed botami
-          const data = Object.fromEntries(fd.entries());
-          delete data._honey;
-
-          if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('WKLEJ') === 0) {
-            showToast(false, 'Formularz nie jest jeszcze skonfigurowany', 'Brakuje klucza Web3Forms w pliku index.html. ' + FAIL_TEXT);
-            return;
-          }
-          data.access_key = WEB3FORMS_KEY;
-          data.subject = 'Nowe zapytanie ze strony promatyk.pl' + (data['Firma'] ? ' – ' + data['Firma'] : '');
-          data.from_name = 'Strona promatyk.pl';
-
-          const label = submitBtn.innerText;
-          submitBtn.disabled = true;
-          submitBtn.innerText = 'Wysyłanie…';
-          submitBtn.classList.add('opacity-60', 'cursor-wait');
-          try {
-            const res = await fetch('https://api.web3forms.com/submit', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-              body: JSON.stringify(data)
-            });
-            const out = await res.json().catch(() => ({}));
-            if (res.ok && out.success) {
-              form.reset();
-              showToast(true, 'Wiadomość wysłana!', 'Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.');
-            } else {
-              console.error('Web3Forms:', res.status, out);
-              showToast(false, 'Nie udało się wysłać', (out.message ? '(' + out.message + ') ' : '') + FAIL_TEXT);
-            }
-          } catch (err) {
-            console.warn('Formularz – fetch nieudany, wysyłka standardowa:', err);
-            nativeSubmit(data);
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerText = label;
-            submitBtn.classList.remove('opacity-60', 'cursor-wait');
-          }
-        });
-      }
-
+  // 1. Nagłówek: tło po przewinięciu + pasek postępu + aktywny link
+  const header = document.getElementById('header');
+  const progress = document.getElementById('scroll-progress');
+  const navLinks = [...document.querySelectorAll('[data-nav]')];
+  const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.classList.toggle('scrolled', y > 20);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+    let current = '';
+    sections.forEach(s => { if (y + 120 >= s.offsetTop) current = '#' + s.id; });
+    navLinks.forEach(a => {
+      const on = a.getAttribute('href') === current;
+      a.classList.toggle('text-gold', on);
+      a.classList.toggle('bg-white/5', on && a.dataset.nav === 'desktop');
     });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 2. Menu mobilne
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const setMenu = open => {
+    mobileMenu.classList.toggle('hidden', !open);
+    menuBtn.setAttribute('aria-expanded', open);
+    menuBtn.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
+    if (open) header.classList.add('scrolled'); else onScroll();
+  };
+  menuBtn.addEventListener('click', () => setMenu(mobileMenu.classList.contains('hidden')));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+  // 3. Pojawianie się sekcji
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('active'); io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(el => io.observe(el));
+    setTimeout(() => reveals.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('active'); }), 50);
+  } else {
+    reveals.forEach(el => el.classList.add('active'));
+  }
+
+  // 4. Zakładki usług
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const selectTab = (tab, focus) => {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    tab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); selectTab(tabs[(i + 1) % tabs.length], true); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); selectTab(tabs[(i - 1 + tabs.length) % tabs.length], true); }
+    });
+  });
+
+  // 5. Filtry realizacji
+  const chips = [...document.querySelectorAll('.chip')];
+  const cards = [...document.querySelectorAll('.case-card')];
+  chips.forEach(c => c.addEventListener('click', () => {
+    chips.forEach(x => x.setAttribute('aria-pressed', x === c));
+    const f = c.dataset.filter;
+    cards.forEach(card => card.classList.toggle('hide', f !== 'all' && !card.dataset.cat.split(' ').includes(f)));
+  }));
+
+  // 6. Okno realizacji z galerią
+  const modal = document.getElementById('case-modal');
+  const stage = document.getElementById('cm-stage');
+  const thumbs = document.getElementById('cm-thumbs');
+  const elTitle = document.getElementById('cm-title');
+  const elTag = document.getElementById('cm-tag');
+  const elCount = document.getElementById('cm-count');
+  const elLabel = document.getElementById('cm-label');
+  const elBody = document.getElementById('cm-body');
+  let cur = null, idx = 0, lastFocus = null;
+
+  const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+
+  const show = i => {
+    idx = (i + cur.media.length) % cur.media.length;
+    [...stage.children].forEach((el, k) => {
+      el.classList.toggle('on', k === idx);
+      if (el.tagName === 'VIDEO') { if (k === idx) { el.currentTime = 0; el.play().catch(() => {}); } else el.pause(); }
+    });
+    [...thumbs.children].forEach((t, k) => t.setAttribute('aria-current', k === idx));
+    const active = thumbs.children[idx];
+    if (active) active.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    elLabel.textContent = cur.media[idx].label;
+    elCount.textContent = cur.media.length > 1 ? pad(idx + 1) + ' / ' + pad(cur.media.length) : '';
+  };
+
+  const openCase = (id, opener) => {
+    cur = window.CASES.find(c => c.id === id);
+    if (!cur) return;
+    lastFocus = opener || document.activeElement;
+    elTitle.textContent = cur.title;
+    elTag.textContent = cur.tag;
+    stage.innerHTML = cur.media.map(m => m.type === 'video'
+      ? `<video class="stage-media" src="${m.src}" poster="${m.poster}" muted loop playsinline controls preload="none" aria-label="${esc(m.label)}"></video>`
+      : `<img class="stage-media" src="${m.src}" alt="${esc(m.label)}" draggable="false">`).join('');
+    thumbs.innerHTML = cur.media.map((m, k) =>
+      `<button type="button" class="thumb shrink-0 w-16 h-12 rounded-lg overflow-hidden opacity-60 hover:opacity-100 relative" aria-label="Pokaż: ${esc(m.label)}">
+         <img src="${m.thumb}" alt="" class="w-full h-full object-cover" loading="lazy">
+         ${m.type === 'video' ? '<span class="absolute inset-0 grid place-items-center bg-black/40 text-white text-xs">▶</span>' : ''}
+       </button>`).join('');
+    [...thumbs.children].forEach((t, k) => t.addEventListener('click', () => show(k)));
+    const multi = cur.media.length > 1;
+    document.getElementById('cm-prev').hidden = !multi;
+    document.getElementById('cm-next').hidden = !multi;
+    thumbs.parentElement.hidden = !multi;
+    elBody.innerHTML = cur.paras.map(p =>
+      `<div><h4 class="font-heading font-bold uppercase text-sm text-concrete mb-2">${esc(p[0])}</h4><p class="text-concrete/65 text-sm leading-relaxed">${esc(p[1])}</p></div>`).join('')
+      + (cur.highlight ? `<p class="text-concrete/85 text-sm leading-relaxed border-l-2 border-gold pl-4"><span class="text-gold font-semibold">${esc(cur.highlight[0])}</span> ${esc(cur.highlight[1])}</p>` : '');
+    show(0);
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('[data-close].w-11, button[data-close]').focus();
+  };
+
+  const closeCase = () => {
+    if (!modal.classList.contains('open')) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    stage.querySelectorAll('video').forEach(v => v.pause());
+    if (lastFocus) lastFocus.focus({ preventScroll: true });
+  };
+
+  document.querySelectorAll('[data-case]').forEach(el => el.addEventListener('click', e => { e.preventDefault(); openCase(el.dataset.case, el); }));
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeCase));
+  document.getElementById('cm-prev').addEventListener('click', () => show(idx - 1));
+  document.getElementById('cm-next').addEventListener('click', () => show(idx + 1));
+  document.addEventListener('keydown', e => {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeCase();
+    if (e.key === 'ArrowRight') show(idx + 1);
+    if (e.key === 'ArrowLeft') show(idx - 1);
+    if (e.key === 'Tab') {
+      const f = [...modal.querySelectorAll('button:not([hidden]), a[href], video[controls]')].filter(x => x.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  let x0 = null;
+  stage.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', e => {
+    if (x0 === null || !cur) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+  });
+
+  // 7. Formularz kontaktowy -> e-mail (Web3Forms)
+  const WEB3FORMS_KEY = 'c3cd8691-92b2-44ff-8afb-904d228bed90';
+  const form = document.getElementById('contact-form');
+  const toast = document.getElementById('toast');
+  const submitBtn = document.getElementById('contact-submit');
+  let toastTimer;
+  const showToast = (ok, title, text) => {
+    document.getElementById('toast-icon').innerText = ok ? '✓' : '!';
+    document.getElementById('toast-title').innerText = title;
+    document.getElementById('toast-text').innerText = text;
+    toast.classList.remove('translate-x-[120%]');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.add('translate-x-[120%]'), ok ? 5000 : 9000);
+  };
+  const FAIL_TEXT = 'Spróbuj ponownie lub zadzwoń: 733 590 940 / napisz: kontakt@promatyk.pl';
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const fd = new FormData(form);
+    if (fd.get('_honey')) return;
+    const data = Object.fromEntries(fd.entries());
+    delete data._honey;
+    if (location.protocol === 'file:') {
+      showToast(false, 'Formularz działa tylko na stronie www', 'Plik otwarto z dysku komputera. Wysyłka zadziała po wgraniu strony na serwer (promatyk.pl).');
+      return;
+    }
+    data.access_key = WEB3FORMS_KEY;
+    data.subject = 'Nowe zapytanie ze strony promatyk.pl' + (data['Firma'] ? ' – ' + data['Firma'] : '');
+    data.from_name = 'Strona promatyk.pl';
+    const label = submitBtn.innerText;
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Wysyłanie…';
+    submitBtn.classList.add('opacity-60', 'cursor-wait');
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const out = await res.json().catch(() => ({}));
+      if (res.ok && out.success) {
+        form.reset();
+        showToast(true, 'Wiadomość wysłana!', 'Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.');
+      } else {
+        showToast(false, 'Nie udało się wysłać', (out.message ? '(' + out.message + ') ' : '') + FAIL_TEXT);
+      }
+    } catch (err) {
+      showToast(false, 'Nie udało się wysłać', FAIL_TEXT);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = label;
+      submitBtn.classList.remove('opacity-60', 'cursor-wait');
+    }
+  });
+});
+
   </script>
 </body>
 </html>
