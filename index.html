@@ -667,7 +667,11 @@
         go(0);
       });
 
-      // 5. Formularz Kontaktowy -> e-mail na kontakt@promatyk.pl (FormSubmit) i Toast
+      // 5. Formularz Kontaktowy -> e-mail na kontakt@promatyk.pl (Web3Forms) i Toast
+      // ▼▼▼ TUTAJ WKLEJ SWÓJ KLUCZ (Access Key) Z web3forms.com ▼▼▼
+      const WEB3FORMS_KEY = 'c3cd8691-92b2-44ff-8afb-904d228bed90';
+      // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
       const form = document.getElementById('contact-form');
       const toast = document.getElementById('toast');
       const submitBtn = document.getElementById('contact-submit');
@@ -678,20 +682,18 @@
         document.getElementById('toast-text').innerText = text;
         toast.classList.remove('translate-x-full');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.add('translate-x-full'), ok ? 5000 : 8000);
+        toastTimer = setTimeout(() => toast.classList.add('translate-x-full'), ok ? 5000 : 9000);
       };
+      const FAIL_TEXT = 'Spróbuj ponownie lub zadzwoń: 733 590 940 / napisz: kontakt@promatyk.pl';
 
-      const FORM_AJAX = 'https://formsubmit.co/ajax/kontakt@promatyk.pl';
-      const FORM_POST = 'https://formsubmit.co/kontakt@promatyk.pl';
-      // Wysyłka standardowa (bez fetch) – działa nawet gdy hosting blokuje zapytania JavaScript
+      // Wysyłka standardowa (bez fetch) – zapasowa, gdy zapytanie JavaScript zostanie zablokowane
       const nativeSubmit = (data) => {
         const f = document.createElement('form');
         f.method = 'POST';
-        f.action = FORM_POST;
+        f.action = 'https://api.web3forms.com/submit';
         f.style.display = 'none';
         const back = location.href.split('#')[0].split('?')[0] + '?wyslano=1#kontakt';
-        const fields = Object.assign({}, data, { _next: back, _captcha: 'false' });
-        Object.entries(fields).forEach(([k, v]) => {
+        Object.entries(Object.assign({}, data, { redirect: back })).forEach(([k, v]) => {
           const i = document.createElement('input');
           i.type = 'hidden'; i.name = k; i.value = v;
           f.appendChild(i);
@@ -699,7 +701,6 @@
         document.body.appendChild(f);
         f.submit();
       };
-      // Powrót po wysyłce standardowej – pokaż potwierdzenie
       if (/[?&]wyslano=1/.test(location.search)) {
         showToast(true, 'Wiadomość wysłana!', 'Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.');
         history.replaceState(null, '', location.pathname + '#kontakt');
@@ -713,46 +714,36 @@
           if (fd.get('_honey')) return; // zabezpieczenie przed botami
           const data = Object.fromEntries(fd.entries());
           delete data._honey;
-          data._subject = 'Nowe zapytanie ze strony promatyk.pl' + (data['Firma'] ? ' – ' + data['Firma'] : '');
-          data._template = 'table';
-          data._replyto = data.email;
 
-          // Strona otwarta jako plik z komputera – FormSubmit takich zgłoszeń nie przyjmuje
-          if (location.protocol === 'file:') {
-            showToast(false, 'Formularz działa tylko na stronie www',
-              'Plik otwarto z dysku komputera. Wysyłka zadziała po wgraniu strony na serwer (promatyk.pl).');
+          if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('WKLEJ') === 0) {
+            showToast(false, 'Formularz nie jest jeszcze skonfigurowany', 'Brakuje klucza Web3Forms w pliku index.html. ' + FAIL_TEXT);
             return;
           }
+          data.access_key = WEB3FORMS_KEY;
+          data.subject = 'Nowe zapytanie ze strony promatyk.pl' + (data['Firma'] ? ' – ' + data['Firma'] : '');
+          data.from_name = 'Strona promatyk.pl';
 
           const label = submitBtn.innerText;
           submitBtn.disabled = true;
           submitBtn.innerText = 'Wysyłanie…';
           submitBtn.classList.add('opacity-60', 'cursor-wait');
-          let out = {};
           try {
-            const res = await fetch(FORM_AJAX, {
+            const res = await fetch('https://api.web3forms.com/submit', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
               body: JSON.stringify(data)
             });
-            out = await res.json().catch(() => ({}));
-            const msg = String(out.message || '');
-            if (res.ok && String(out.success) === 'true') {
+            const out = await res.json().catch(() => ({}));
+            if (res.ok && out.success) {
               form.reset();
               showToast(true, 'Wiadomość wysłana!', 'Dziękujemy za kontakt. Odpowiemy najszybciej jak to możliwe.');
-            } else if (/activat/i.test(msg)) {
-              showToast(false, 'Formularz czeka na aktywację',
-                'Na kontakt@promatyk.pl wysłano mail z linkiem „Activate Form” (sprawdź też SPAM). Po kliknięciu wyślij zapytanie ponownie.');
             } else {
-              // Odpowiedź z błędem – próbujemy zwykłej wysyłki formularza
-              nativeSubmit(data);
-              return;
+              console.error('Web3Forms:', res.status, out);
+              showToast(false, 'Nie udało się wysłać', (out.message ? '(' + out.message + ') ' : '') + FAIL_TEXT);
             }
           } catch (err) {
-            // Fetch zablokowany (np. przez ustawienia hostingu) – zwykła wysyłka formularza
             console.warn('Formularz – fetch nieudany, wysyłka standardowa:', err);
             nativeSubmit(data);
-            return;
           } finally {
             submitBtn.disabled = false;
             submitBtn.innerText = label;
